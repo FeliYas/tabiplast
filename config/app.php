@@ -84,8 +84,6 @@ return [
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'es_ES'),
 
-    'available_locales' => ['es', 'en', 'pt'],
-
     /*
     |--------------------------------------------------------------------------
     | Encryption Key

@@ -30,12 +30,10 @@ class NovedadesController extends Controller
         // Validar los datos del formulario
         $validator = Validator::make($request->all(), [
             'orden'                => 'required|string|max:255',
+            'epigrafe'            => 'nullable|string|max:255',
             'titulo'               => 'required|string|max:255',
-            'tituloen'            => 'required|string|max:255',
-            'tituloport'            => 'required|string|max:255',
             'descripcion'          => 'required|string',
-            'descripcionen'        => 'required|string',
-            'descripcionport'        => 'required|string',
+            'especificaciones'     => 'nullable|string',
             'path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -52,12 +50,10 @@ class NovedadesController extends Controller
         // Crear la novedad con los datos validados
         $novedad = Novedad::create([
             'orden'              => $request->orden,
+            'epigrafe'           => $request->epigrafe,
             'titulo'             => $request->titulo,
-            'tituloen'          => $request->tituloen,
-            'tituloport'          => $request->tituloport,
             'descripcion'        => $request->descripcion,
-            'descripcionen'        => $request->descripcionen,
-            'descripcionport'        => $request->descripcionport,
+            'especificaciones'   => $request->especificaciones,
             'path'               => $imagePath,
         ]);
 
@@ -70,12 +66,10 @@ class NovedadesController extends Controller
         // Validar los campos del formulario
         $validator = Validator::make($request->all(), [
             'orden'                => 'nullable|string|max:255',
+            'epigrafe'            => 'nullable|string|max:255',
             'titulo'               => 'nullable|string|max:255',
-            'tituloen'            => 'nullable|string|max:255',
-            'tituloport'            => 'nullable|string|max:255',
             'descripcion'          => 'nullable|string',
-            'descripcionen'        => 'nullable|string',
-            'descripcionport'        => 'nullable|string',
+            'especificaciones'     => 'nullable|string',
             'path'                 => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20480',
         ]);
         if ($validator->fails()) {
@@ -97,12 +91,10 @@ class NovedadesController extends Controller
         }
 
         $novedades->orden              = $request->orden;
+        $novedades->epigrafe           = $request->epigrafe;
         $novedades->titulo             = $request->titulo;
-        $novedades->tituloen          = $request->tituloen;
-        $novedades->tituloport          = $request->tituloport;
         $novedades->descripcion        = $request->descripcion;
-        $novedades->descripcionen        = $request->descripcionen;
-        $novedades->descripcionport        = $request->descripcionport;
+        $novedades->especificaciones   = $request->especificaciones;
         $novedades->path               = $imagePath ?? $novedades->path;
         // Guardar los cambios en Novedades
         $novedades->save();

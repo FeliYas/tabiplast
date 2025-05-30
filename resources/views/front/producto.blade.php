@@ -162,7 +162,7 @@
         }
 
         .active-thumbnail {
-            border-color: #E12328 !important;
+            border-color: #c87800 !important;
         }
     </style>
 @endsection

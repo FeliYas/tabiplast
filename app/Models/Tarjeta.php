@@ -4,15 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Color extends Model
+class Tarjeta extends Model
 {
-    protected $table = 'colores';
     protected $fillable = [
-        'orden',
         'path',
-        'codigo',
         'titulo',
-        'tituloen',
-        'tituloport',
+        'descripcion',
     ];
+
 }

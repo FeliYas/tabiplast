@@ -11,10 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('banners', function (Blueprint $table) {
+        Schema::create('colocaciones', function (Blueprint $table) {
             $table->id();
             $table->string('orden')->nullable();
             $table->string('path')->nullable();
+            $table->string('titulo')->nullable();
+            $table->mediumText('descripcion')->nullable();
+            $table->foreignId('producto_id')
+                ->constrained('productos')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -24,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('banners');
+        Schema::dropIfExists('colocaciones');
     }
 };

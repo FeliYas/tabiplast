@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('calidad', function (Blueprint $table) {
+        Schema::create('metadatos', function (Blueprint $table) {
             $table->id();
-            $table->string('path')->nullable();
-            $table->string('titulo')->nullable();
+            $table->string('seccion')->nullable();
+            $table->string('keyword')->nullable();
             $table->mediumText('descripcion')->nullable();
-            $table->string('tituloen')->nullable();
-            $table->mediumText('descripcionen')->nullable();
-            $table->string('tituloport')->nullable();
-            $table->mediumText('descripcionport')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('calidad');
+        Schema::dropIfExists('metadatos');
     }
 };

@@ -2,7 +2,6 @@
 import { ref, reactive, onMounted, inject } from 'vue';
 import { router, useForm } from '@inertiajs/vue3';
 import DashboardLayout from '@/layouts/DashboardLayout.vue';
-import QuillEditor from '@/components/QuillEditor.vue';
 import DeleteModal from '@/components/Modales/DeleteModal.vue';
 
 defineOptions({
@@ -32,11 +31,6 @@ const editFileInput = ref(null);
 const createForm = useForm({
   orden: '',
   titulo: '',
-  tituloen: '',
-  tituloport: '',
-  descripcion: '',
-  descripcionen: '',
-  descripcionport: '',
   path: null
 });
 
@@ -45,11 +39,6 @@ const editForm = useForm({
   id: null,
   orden: '',
   titulo: '',
-  tituloen: '',
-  tituloport: '',
-  descripcion: '',
-  descripcionen: '',
-  descripcionport: '',
   path: null
 });
 
@@ -67,11 +56,6 @@ const closeCreateModal = () => {
 const resetCreateForm = () => {
   createForm.orden = '';
   createForm.titulo = '';
-  createForm.tituloen = '';
-  createForm.tituloport = '';
-  createForm.descripcion = '';
-  createForm.descripcionen = '';
-  createForm.descripcionport = '';
   createForm.path = null;
   createForm.fileLabel = 'Seleccionar archivo';
   createForm.filePreview = null;
@@ -114,11 +98,6 @@ const openEditModal = (slider) => {
   editForm.id = slider.id;
   editForm.orden = slider.orden;
   editForm.titulo = slider.titulo;
-  editForm.tituloen = slider.tituloen;
-  editForm.tituloport = slider.tituloport;
-  editForm.descripcion = slider.descripcion;
-  editForm.descripcionen = slider.descripcionen;
-  editForm.descripcionport = slider.descripcionport;
   editForm.currentPath = slider.path;
   editForm.path = null;
   editForm.fileLabel = 'Seleccionar nuevo archivo (opcional)';
@@ -221,14 +200,11 @@ const getExtension = (path) => {
             Tu navegador no soporta el formato de video.
           </video>
 
-          <div class="mt-6 flex-grow">
-            <div class="flex items-start gap-4">
-              <h3 class="text-2xl font-medium text-black max-w-3/4">{{ slider.titulo }}</h3>
-              <span class="text-black font-medium text-2xl">-</span>
-              <p class="text-black mt-1.5">{{ slider.orden.toUpperCase() }}</p>
+          <div class="mt-2 flex-grow">
+            <div class="flex flex-col items-start gap-2">
+              <p class="text-gray-500">{{ slider.orden.toUpperCase() }}</p>
+              <h3 class="text-2xl font-medium text-black">{{ slider.titulo }}</h3>
             </div>
-
-            <div class="text-gray-500 line-clamp-3 h-[96px] py-3 custom-editor" v-html="slider.descripcion"></div>
           </div>
 
           <div class="flex gap-2 mt-2">
@@ -295,60 +271,13 @@ const getExtension = (path) => {
                   placeholder="Posición de orden">
               </div>
 
-              <div class="flex mb-4 w-full gap-4">
-                <div class="w-1/3">
-                  <label for="titulo" class="block font-medium text-gray-700 mb-1">
-                    Título *
-                  </label>
-                  <input v-model="createForm.titulo" id="titulo" type="text" required
-                    class="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-2 focus:ring-opacity-50 focus:ring-main-color focus:border-main-color"
-                    placeholder="Título del slider">
-                </div>
-                <div class="w-1/3">
-                  <label for="tituloen" class="block font-medium text-gray-700 mb-1">
-                    Título en ingles *
-                  </label>
-                  <input v-model="createForm.tituloen" id="tituloen" type="text" required
-                    class="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-2 focus:ring-opacity-50 focus:ring-main-color focus:border-main-color"
-                    placeholder="Título del slider">
-                </div>
-                <div class="w-1/3">
-                  <label for="tituloport" class="block font-medium text-gray-700 mb-1">
-                    Título en portugues *
-                  </label>
-                  <input v-model="createForm.tituloport" id="tituloport" type="text" required
-                    class="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-2 focus:ring-opacity-50 focus:ring-main-color focus:border-main-color"
-                    placeholder="Título del slider">
-                </div>
-              </div>
-
-              <!-- Campo Descripción -->
-              <div class="flex mb-4 w-full gap-4">
-                <div class="w-1/3">
-                  <label for="descripcion" class="block font-medium text-gray-700 mb-1">
-                    Descripcion *
-                  </label>
-                  <QuillEditor unique_ref="descripcion_primario" placeholder="Descripcion"
-                    :initial_content="createForm.descripcion" v-on:text_changed="createForm.descripcion = $event">
-                  </QuillEditor>
-                </div>
-                <div class="w-1/3">
-                  <label for="descripcionen" class="block font-medium text-gray-700 mb-1">
-                    Descripcion en ingles *
-                  </label>
-                  <QuillEditor unique_ref="descripcion_secundario" placeholder="Descripcion"
-                    :initial_content="createForm.descripcionen" v-on:text_changed="createForm.descripcionen = $event">
-                  </QuillEditor>
-                </div>
-                <div class="w-1/3">
-                  <label for="descripcionport" class="block font-medium text-gray-700 mb-1">
-                    Descripcion en portugues*
-                  </label>
-                  <QuillEditor unique_ref="descripcion_terceario" placeholder="Descripcion"
-                    :initial_content="createForm.descripcionport"
-                    v-on:text_changed="createForm.descripcionport = $event">
-                  </QuillEditor>
-                </div>
+              <div class="mb-4 w-full">
+                <label for="titulo" class="block font-medium text-gray-700 mb-1">
+                  Título *
+                </label>
+                <input v-model="createForm.titulo" id="titulo" type="text" required
+                  class="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-2 focus:ring-opacity-50 focus:ring-main-color focus:border-main-color"
+                  placeholder="Título del slider">
               </div>
 
               <!-- Campo Archivo (Path) -->
@@ -437,59 +366,13 @@ const getExtension = (path) => {
                   placeholder="Posición de orden">
               </div>
 
-              <div class="flex mb-4 w-full gap-4">
-                <div class="w-1/3">
-                  <label for="edit_titulo" class="block font-medium text-gray-700 mb-1">
-                    Título *
-                  </label>
-                  <input v-model="editForm.titulo" id="edit_titulo" type="text" required
-                    class="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-2 focus:ring-opacity-50 focus:ring-main-color focus:border-main-color"
-                    placeholder="Título del slider">
-                </div>
-                <div class="w-1/3">
-                  <label for="edit_tituloen" class="block font-medium text-gray-700 mb-1">
-                    Título en ingles *
-                  </label>
-                  <input v-model="editForm.tituloen" id="edit_tituloen" type="text" required
-                    class="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-2 focus:ring-opacity-50 focus:ring-main-color focus:border-main-color"
-                    placeholder="Título del slider">
-                </div>
-                <div class="w-1/3">
-                  <label for="edit_tituloport" class="block font-medium text-gray-700 mb-1">
-                    Título en portugues *
-                  </label>
-                  <input v-model="editForm.tituloport" id="edit_tituloport" type="text" required
-                    class="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-2 focus:ring-opacity-50 focus:ring-main-color focus:border-main-color"
-                    placeholder="Título del slider">
-                </div>
-              </div>
-
-              <!-- Campo Descripción -->
-              <div class="flex mb-4 w-full gap-4">
-                <div class="w-1/3">
-                  <label for="edit_descripcion" class="block font-medium text-gray-700 mb-1">
-                    Descripcion *
-                  </label>
-                  <QuillEditor unique_ref="descripcion_primario" placeholder="Descripcion"
-                    :initial_content="editForm.descripcion" v-on:text_changed="editForm.descripcion = $event">
-                  </QuillEditor>
-                </div>
-                <div class="w-1/3">
-                  <label for="edit_descripcionen" class="block font-medium text-gray-700 mb-1">
-                    Descripcion en ingles *
-                  </label>
-                  <QuillEditor unique_ref="descripcion_secundario" placeholder="Descripcion"
-                    :initial_content="editForm.descripcionen" v-on:text_changed="editForm.descripcionen = $event">
-                  </QuillEditor>
-                </div>
-                <div class="w-1/3">
-                  <label for="edit_descripcionport" class="block font-medium text-gray-700 mb-1">
-                    Descripcion en portugues*
-                  </label>
-                  <QuillEditor unique_ref="descripcion_terceario" placeholder="Descripcion"
-                    :initial_content="editForm.descripcionport" v-on:text_changed="editForm.descripcionport = $event">
-                  </QuillEditor>
-                </div>
+              <div class="mb-4 w-full">
+                <label for="edit_titulo" class="block font-medium text-gray-700 mb-1">
+                  Título *
+                </label>
+                <input v-model="editForm.titulo" id="edit_titulo" type="text" required
+                  class="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-2 focus:ring-opacity-50 focus:ring-main-color focus:border-main-color"
+                  placeholder="Título del slider">
               </div>
 
               <!-- Archivo actual -->

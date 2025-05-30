@@ -33,11 +33,6 @@ class SliderController extends Controller
             'orden' => 'required|string|max:255',
             'path' => 'required|mimes:jpeg,png,jpg,gif,svg,mp4,avi,mov|max:100000',
             'titulo' => 'required|string|max:255',
-            'tituloen' => 'nullable|string|max:255',
-            'tituloport' => 'nullable|string|max:255',
-            'descripcion' => 'nullable|string|max:255',
-            'descripcionen' => 'nullable|string|max:255',
-            'descripcionport' => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -57,11 +52,6 @@ class SliderController extends Controller
             'orden' => $request->orden,
             'path' => $filePath,
             'titulo' => $request->titulo,
-            'tituloen' => $request->tituloen,
-            'tituloport' => $request->tituloport,
-            'descripcion' => $request->descripcion,
-            'descripcionen' => $request->descripcionen,
-            'descripcionport' => $request->descripcionport,
         ]);
 
         // Redireccionar al index con un mensaje de éxito
@@ -81,11 +71,6 @@ class SliderController extends Controller
             'orden' => 'required|string|max:255',
             'path' => 'nullable|mimes:jpeg,png,jpg,gif,svg,mp4,avi,mov|max:100000',
             'titulo' => 'required|string|max:255',
-            'tituloen' => 'nullable|string|max:255',
-            'tituloport' => 'nullable|string|max:255',
-            'descripcion' => 'required|string|max:255',
-            'descripcionen' => 'nullable|string|max:255',
-            'descripcionport' => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -111,11 +96,6 @@ class SliderController extends Controller
         // Actualizar los campos del slider
         $slider->orden = $request->input('orden');
         $slider->titulo = $request->input('titulo');
-        $slider->tituloen = $request->input('tituloen');
-        $slider->tituloport = $request->input('tituloport');
-        $slider->descripcion = $request->input('descripcion');
-        $slider->descripcionen = $request->input('descripcionen');
-        $slider->descripcionport = $request->input('descripcionport');
         $slider->path = $imagePath ?? $slider->path; // Mantener la ruta anterior si no se subió una nueva imagen
 
         // Guardar los cambios en la base de datos

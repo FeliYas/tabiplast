@@ -52,42 +52,12 @@
             </ul>
           </li>
           <li>
-            <button
-              class="w-full text-left text-white grid grid-cols-[24px_1fr_24px] items-center gap-3 px-4 py-3 hover:bg-white/10 rounded-lg transition-all duration-200 group cursor-pointer"
-              @click="toggleSubmenu('nosotrosSubmenu')">
-              <i class="fa-solid fa-address-card text-center w-5 text-white"></i>
-              <span
-                class="whitespace-nowrap group-hover:translate-x-1 transition-transform duration-200">Nosotros</span>
-              <svg class="ml-auto w-4 h-4 transition-transform duration-300"
-                :class="{ 'rotate-180': openSubmenus.nosotrosSubmenu }" fill="none" stroke="currentColor"
-                viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-
-            <ul class="relative overflow-hidden transition-all duration-300"
-              :style="{ maxHeight: openSubmenus.nosotrosSubmenu ? nosotrosSubmenuHeight + 'px' : '0px' }"
-              ref="nosotrosSubmenu">
-              <div class="absolute left-6 w-0.5 h-25 bg-gray-200 opacity-80 rounded-sm mr-3"></div>
-              <li>
-                <Link :href="route('banners.dashboard')"
-                  class="block pl-10 py-2 text-gray-200 hover:text-white rounded-lg transition-all duration-200 my-1 cursor-pointer">
-                <span class="opacity-80 hover:opacity-100 transition-opacity flex items-center">
-                  <i class="fa-solid fa-panorama w-5 mr-2 text-xs"></i>
-                  Banners
-                </span>
-                </Link>
-              </li>
-              <li>
-                <Link :href="route('nosotros.dashboard')"
-                  class="block pl-10 py-2 text-gray-200 hover:text-white rounded-lg transition-all duration-200 my-1 cursor-pointer">
-                <span class="opacity-80 hover:opacity-100 transition-opacity flex items-center">
-                  <i class="fa-solid fa-align-left w-5 mr-2 text-xs"></i>
-                  Contenido
-                </span>
-                </Link>
-              </li>
-            </ul>
+            <Link :href="route('nosotros.dashboard')"
+              class="grid grid-cols-[24px_1fr_24px] items-center gap-3 px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-all duration-200 group cursor-pointer">
+            <i class="fa-solid fa-address-card text-center w-5 text-white"></i>
+            <span class="whitespace-nowrap group-hover:translate-x-1 transition-transform duration-200">Nosotros</span>
+            <span></span>
+            </Link>
           </li>
           <li>
             <button
@@ -102,7 +72,6 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
-
             <ul class="relative overflow-hidden transition-all duration-300"
               :style="{ maxHeight: openSubmenus.productosSubmenu ? productosSubmenuHeight + 'px' : '0px' }"
               ref="productosSubmenu">
@@ -126,31 +95,6 @@
                 </Link>
               </li>
             </ul>
-          </li>
-          <li>
-            <Link :href="route('aplicaciones.dashboard')"
-              class="grid grid-cols-[24px_1fr_24px] items-center gap-3 px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-all duration-200 group cursor-pointer">
-            <i class="fa-solid fa-puzzle-piece text-center w-5 text-white"></i>
-            <span class="whitespace-nowrap group-hover:translate-x-1 transition-transform duration-200">Aplicaciones</span>
-            <span></span>
-            </Link>
-          </li>
-          <li>
-            <Link :href="route('colores.dashboard')"
-              class="grid grid-cols-[24px_1fr_24px] items-center gap-3 px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-all duration-200 group cursor-pointer">
-            <i class="fa-solid fa-palette text-center w-5 text-white"></i>
-            <span class="whitespace-nowrap group-hover:translate-x-1 transition-transform duration-200">Carta de
-              colores</span>
-            <span></span>
-            </Link>
-          </li>
-          <li>
-            <Link :href="route('calidad.dashboard')"
-              class="grid grid-cols-[24px_1fr_24px] items-center gap-3 px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-all duration-200 group cursor-pointer">
-            <i class="fa-solid fa-star text-center w-5 text-white"></i>
-            <span class="whitespace-nowrap group-hover:translate-x-1 transition-transform duration-200">Calidad</span>
-            <span></span>
-            </Link>
           </li>
           <li>
             <Link :href="route('novedades.dashboard')"

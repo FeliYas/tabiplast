@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contenidos', function (Blueprint $table) {
+        Schema::create('internacional', function (Blueprint $table) {
             $table->id();
-            $table->string('path');
+            $table->string('path')->nullable();
             $table->string('titulo')->nullable();
             $table->mediumText('descripcion')->nullable();
-            $table->string('tituloen')->nullable();
-            $table->mediumText('descripcionen')->nullable();
-            $table->string('tituloport')->nullable();
-            $table->mediumText('descripcionport')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contenidos');
+        Schema::dropIfExists('internacional');
     }
 };

@@ -154,7 +154,7 @@
         </script>
         <div class="max-w-[90%] lg:max-w-[1224px] mx-auto py-8">
             <div class="flex flex-col items-center gap-7">
-                <h2 class="font-medium text-[26px] text-[#E12328]">{{ __('NUESTROS PRODUCTOS') }}</h2>
+                <h2 class="font-medium text-[26px] text-[#c87800]">{{ __('NUESTROS PRODUCTOS') }}</h2>
                 <div class="grid lg:grid-cols-4 gap-6 w-full">
                     @foreach ($productos as $producto)
                         <div class="flex flex-col gap-2.5">

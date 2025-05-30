@@ -18,12 +18,7 @@ return new class extends Migration
             $table->string('epigrafe')->nullable();
             $table->string('titulo')->nullable();
             $table->mediumText('descripcion')->nullable();
-            $table->string('epigrafeen')->nullable();
-            $table->string('tituloen')->nullable();
-            $table->mediumText('descripcionen')->nullable();
-            $table->string('epigrafeport')->nullable();
-            $table->string('tituloport')->nullable();
-            $table->mediumText('descripcionport')->nullable();
+            $table->mediumText('especificaciones')->nullable();
             $table->timestamps();
         });
     }

@@ -13,10 +13,8 @@ class ContenidoController extends Controller
 {
     public function index()
     {
-        $contenido = Contenido::take(2)->get();
-        foreach ($contenido as $cont) {
-            $cont->path = Storage::url($cont->path);
-        }
+        $contenido = Contenido::first();
+        $contenido->path = Storage::url($contenido->path);
         $logo = Logo::where('seccion', 'dashboard')->first();
         $logo->path = Storage::url($logo->path);
         return inertia('Admin/Contenido', [
@@ -29,11 +27,7 @@ class ContenidoController extends Controller
         $validator = Validator::make($request->all(), [
             'path' => 'nullable|mimes:jpeg,png,jpg,gif,svg,mp4,avi,mov|max:100000',
             'titulo' => 'nullable|string|max:255',
-            'tituloen' => 'nullable|string|max:255',
-            'tituloport' => 'nullable|string|max:255',
             'descripcion' => 'nullable|required',
-            'descripcionen' => 'nullable|required',
-            'descripcionport' => 'nullable|required',
         ]);
         if ($validator->fails()) {
             return back()->witherrors($validator->messages()->first());
@@ -53,11 +47,7 @@ class ContenidoController extends Controller
         }
 
         $contenido->titulo = $request->titulo;
-        $contenido->tituloen = $request->tituloen;
-        $contenido->tituloport = $request->tituloport;
         $contenido->descripcion = $request->descripcion;
-        $contenido->descripcionen = $request->descripcionen;
-        $contenido->descripcionport = $request->descripcionport;
         $contenido->path = $imagePath ?? $contenido->path;
 
         $contenido->save();

@@ -10,11 +10,6 @@ class Slider extends Model
         'orden',
         'path',
         'titulo',
-        'descripcion',
-        'tituloen',
-        'descripcionen',
-        'tituloport',
-        'descripcionport',
     ];
 
 }

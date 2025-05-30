@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contacto', function (Blueprint $table) {
+        Schema::create('contenido', function (Blueprint $table) {
             $table->id();
-            $table->string('direccion')->nullable();
-            $table->string('telefono')->nullable();
-            $table->string('telefono2')->nullable();
-            $table->string('email')->nullable();
-            $table->mediumText('iframe')->nullable();
-            $table->string('whatsapp')->nullable();
+            $table->string('path')->nullable();
+            $table->string('titulo')->nullable();
+            $table->mediumText('descripcion')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contacto');
+        Schema::dropIfExists('contenido');
     }
 };

@@ -9,13 +9,10 @@ class Producto extends Model
     protected $fillable = [
         'orden',
         'titulo',
-        'tituloen',
-        'tituloport',
         'descripcion',
-        'descripcionen',
-        'descripcionport',
         'categoria_id',
         'ficha',
+        'video',
     ];
 
     public function categoria()
@@ -31,9 +28,9 @@ class Producto extends Model
     {
         return $this->hasOne(ProductoImg::class)->orderBy('orden', 'asc');
     }
-    
-    public function aplicaciones()
+
+    public function colocaciones()
     {
-        return $this->belongsToMany(Aplicacion::class, 'aplicacion_producto', 'producto_id', 'aplicacion_id');
+        return $this->hasMany(Colocacion::class)->orderBy('orden', 'asc');
     }
 }

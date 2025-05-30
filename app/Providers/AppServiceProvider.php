@@ -22,9 +22,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        URL::forceScheme('https');
-        Blade::directive('lang', function ($expression) {
-        return "<?php echo App\Helpers\LocaleHelper::getField($expression); ?>";
-    });
+        // URL::forceScheme('https');
     }
 }

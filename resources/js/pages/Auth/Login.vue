@@ -10,7 +10,7 @@ import { Head } from '@inertiajs/vue3'
     <div id="particles-js" class="fixed inset-0 z-0"></div>
     <div class="z-10">
       <a href="/" class="back-link flex absolute top-4 left-4 text-main-color px-4 py-2 outline-none hover:underline hidden lg:block">
-        <i class="fa-solid fa-arrow-left mr-2 p-1" style="color: #9A2222;"></i>Volver al Home
+        <i class="fa-solid fa-arrow-left mr-2 p-1" style="color: #F79E1C;"></i>Volver al Home
       </a>
       <div>
         <div class="flex justify-center p-6 mb-6">
@@ -66,8 +66,8 @@ import { Head } from '@inertiajs/vue3'
               <span v-else class="spinner-container">
                 <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-main-color" xmlns="http://www.w3.org/2000/svg"
                   fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="white" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="white"
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="#c87800" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="#c87800"
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                   </path>
                 </svg>
@@ -177,7 +177,7 @@ export default {
                 }
               },
               "color": {
-                "value": "#9A2222"
+                "value": "#F79E1C"
               },
               "shape": {
                 "type": "circle",
@@ -212,7 +212,7 @@ export default {
               "line_linked": {
                 "enable": true,
                 "distance": 160,
-                "color": "#9A2222",
+                "color": "#F79E1C",
                 "opacity": 0.3,
                 "width": 1
               },
@@ -362,22 +362,9 @@ input {
 }
 
 .remember-checkbox:checked {
-  accent-color: #9A2222;
+  accent-color: #F79E1C;
 }
 
-/* Añadir una clase de utilidad para botones */
-.btn-secondary {
-  background-color: #9A2222;
-  color: white;
-  border-radius: 0.375rem;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.btn-secondary:hover {
-  background-color: #c82222;
-  transform: translateY(-2px);
-}
 
 .btn-secondary:disabled {
   opacity: 0.7;
@@ -386,6 +373,6 @@ input {
 
 /* Clase de utilidad para el color principal */
 .text-main-color {
-  color: #9A2222;
+  color: #F79E1C;
 }
 </style>

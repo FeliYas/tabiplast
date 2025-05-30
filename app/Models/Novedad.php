@@ -9,13 +9,11 @@ class Novedad extends Model
     protected $table = 'novedades';
     protected $fillable = [
         'orden',
+        'epigrafe',
         'path',
         'titulo',
         'descripcion',
-        'tituloen',
-        'descripcionen',
-        'tituloport',
-        'descripcionport',
+        'especificaciones',
     ];
 
 }

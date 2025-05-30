@@ -218,20 +218,20 @@ html, body {
     
 }
 .bg-main-color{
-    background-color: #9A2222;
+    background-color: #F79E1C;
 }
 .text-main-color{
-    color: #9A2222;
+    color: #F79E1C;
 }
 .border-main-color{
-    border-color: #9A2222;
+    border-color: #F79E1C;
 }
 .btn-primary {
-  background-color: #E12328;
+  background-color: #F79E1C;
   color: #fff;
   padding: 0.5rem 1rem;
   border-radius: 22.5px;
-  border: 1px solid #E12328;
+  border: 1px solid #F79E1C;
   cursor: pointer;
   text-align: center;
   display: inline-flex;
@@ -243,16 +243,16 @@ html, body {
 
 .btn-primary:hover {
   background-color: #fff;
-  color: #E12328;
+  color: #F79E1C;
   box-shadow: 0 0 10px rgba(55, 73, 119, 0.3);
   transform: scale(1.03);
 }
 .btn-secondary {
   background-color: #fff;
-  color: #E12328;
+  color: #F79E1C;
   padding: 0.5rem 1rem;
   border-radius: 22.5px;
-  border: 1px solid #E12328;
+  border: 1px solid #F79E1C;
   cursor: pointer;
   text-align: center;
   display: inline-flex;
@@ -263,7 +263,7 @@ html, body {
 }
 
 .btn-secondary:hover {
-  background-color: #E12328;
+  background-color: #F79E1C;
   color: #fff;
   box-shadow: 0 0 10px rgba(55, 73, 119, 0.3);
   transform: scale(1.03);

@@ -33,13 +33,8 @@ const props = defineProps({
         type: [String, Function],
         required: true
     },
-    aggProdRoute: {
-        type: [String, Function],
-        required: true
-    },
 
     productoId: Number,
-    aplicacionId: Number,
     recomendacion: String,
     productos: {
         type: Array,
@@ -90,16 +85,6 @@ const filteredProducts = computed(() => {
     );
 });
 
-// Productos ya relacionados (para no mostrarlos en el modal)
-const productosDisponibles = computed(() => {
-    // props.data contiene los productos ya relacionados
-    const productosRelacionadosIds = (props.data || []).map(p => p.id);
-
-    // Solo mostrar productos que NO están ya relacionados
-    return filteredProducts.value.filter(producto =>
-        !productosRelacionadosIds.includes(producto.id)
-    );
-});
 
 // Funciones del modal
 const openProductosModal = () => {
@@ -259,21 +244,6 @@ const getCategoriaName = (categoriaId, row) => {
     return categoria ? categoria.titulo.charAt(0).toUpperCase() + categoria.titulo.slice(1) : 'N/A';
 };
 
-// Función para obtener el contador de productos relacionados
-const getProductosCount = (row) => {
-    // Si hay un valor de withCount precargado desde Laravel, lo usamos
-    if (row.productos_count !== undefined) {
-        return row.productos_count;
-    }
-
-    // Si hay productos cargados en el objeto como relación, contamos esos
-    if (row.productos && Array.isArray(row.productos)) {
-        return row.productos.length;
-    }
-
-    // Si no hay información, devolvemos 0
-    return 0;
-};
 
 const submitCreateForm = () => {
     // Crear FormData para enviar archivos
@@ -410,8 +380,7 @@ const toggleDestacado = (id, isChecked) => {
             <!-- Encabezado de la grid -->
             <div class="grid-header">
                 <template v-for="column in columns" :key="column">
-                    <div v-if="column !== 'password' && column !== 'tituloen' && column !== 'tituloport' && column !== 'descripcionen' && column !== 'descripcionport'"
-                        class="grid-header-cell">
+                    <div v-if="column !== 'password'" class="grid-header-cell">
                         <template v-if="column === 'categoria_id'">
                             Categoria
                         </template>
@@ -440,7 +409,7 @@ const toggleDestacado = (id, isChecked) => {
                 <template v-else>
                     <div v-for="row in data" :key="row.id" class="grid-row">
                         <template v-for="column in columns" :key="column">
-                            <div v-if="column !== 'password' && column !== 'tituloen' && column !== 'tituloport' && column !== 'descripcionen' && column !== 'descripcionport'"
+                            <div v-if="column !== 'password'"
                                 :class="['grid-cell', column === 'path' ? 'grid-image-cell' : '']">
 
                                 <!-- Celda de imagen -->
@@ -474,26 +443,6 @@ const toggleDestacado = (id, isChecked) => {
                                     </div>
                                 </template>
 
-                                <!-- Productos relacionados -->
-                                <template v-else-if="column === 'productos relacionados'">
-                                    <Link :href="productosRoute(row.id)"
-                                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-main-color bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 border border-main-color cursor-pointer">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                                    </svg>
-                                    <span>Productos</span>
-                                    <span v-if="getProductosCount(row) > 0"
-                                        class="ml-2 px-2 py-0.5 text-xs bg-main-color text-white rounded-full font-medium">
-                                        {{ getProductosCount(row) }}
-                                    </span>
-                                    <span v-else
-                                        class="ml-2 px-2 py-0.5 text-xs bg-gray-400 text-white rounded-full font-medium">
-                                        0
-                                    </span>
-                                    </Link>
-                                </template>
-
                                 <!-- Celda de ficha -->
                                 <template v-else-if="column === 'ficha'">
                                     <div class="flex justify-center">
@@ -523,8 +472,11 @@ const toggleDestacado = (id, isChecked) => {
                                     </div>
                                 </template>
 
-                                <!-- Campo descripcion con v-html -->
                                 <template v-else-if="column === 'descripcion'">
+                                    <div class="custom-editor max-h-[100px] overflow-y-auto" v-html="row[column]"></div>
+                                </template>
+
+                                <template v-else-if="column === 'especificaciones'">
                                     <div class="custom-editor max-h-[100px] overflow-y-auto" v-html="row[column]"></div>
                                 </template>
 
@@ -581,121 +533,6 @@ const toggleDestacado = (id, isChecked) => {
                 </template>
             </div>
         </div>
-        <!-- Modal de Productos -->
-        <Transition name="modal">
-            <div v-if="showProductosModal" class="fixed inset-0 z-50 flex items-center justify-center px-4">
-                <div class="absolute inset-0 bg-black opacity-60 backdrop-blur-sm" @click="closeModal"></div>
-                <Transition name="modal-content">
-                    <div
-                        class="relative w-full max-w-4xl z-50 bg-white rounded-lg shadow-lg max-h-[90vh] overflow-y-auto">
-                        <!-- Header -->
-                        <div class="bg-main-color bg-opacity-10 px-6 py-4 border-b border-main-color border-opacity-20">
-                            <h2 class="text-white text-xl font-semibold flex items-center gap-2">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 4V20M4 12H20" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                Seleccionar Productos
-                            </h2>
-                        </div>
-
-                        <!-- Contenido del modal -->
-                        <div class="p-6 text-black">
-                            <!-- Barra de búsqueda -->
-                            <div class="mb-4">
-                                <label class="block font-medium text-gray-700 mb-1">Buscar productos</label>
-                                <input v-model="searchQuery" type="text" placeholder="Buscar por nombre o categoría..."
-                                    class="w-full px-4 py-2 border border-main-color rounded-md focus:ring-2 focus:ring-opacity-50 focus:ring-main-color focus:border-main-color">
-                            </div> <!-- Botón seleccionar todos -->
-                            <div class="mb-4 flex items-center justify-between">
-                                <span class="text-sm text-gray-500 font-medium">
-                                    {{ selectedProducts.length }} de {{ productosDisponibles.length }} productos
-                                    seleccionados
-                                </span>
-                            </div>
-
-                            <!-- Lista de productos -->
-                            <div class="border border-main-color border-opacity-30 rounded-md overflow-hidden">
-                                <div
-                                    class="bg-main-color bg-opacity-5 py-2 px-4 border-b border-main-color border-opacity-20">
-                                    <h3 class="font-medium text-white">Productos disponibles</h3>
-                                </div>
-
-                                <div class="max-h-80 overflow-y-auto">
-                                    <div v-if="productosDisponibles.length === 0" class="p-8 text-center text-gray-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="h-12 w-12 mx-auto mb-3 text-gray-400" fill="none" viewBox="0 0 24 24"
-                                            stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M20 12H4M12 20V4" />
-                                        </svg>
-                                        <p class="font-medium">No hay productos disponibles para agregar</p>
-                                        <p class="text-sm mt-1">Todos los productos ya están relacionados con esta
-                                            aplicación o
-                                            no
-                                            se encontraron productos en la búsqueda</p>
-                                    </div>
-
-                                    <div v-else>
-                                        <div v-for="producto in productosDisponibles" :key="producto.id"
-                                            class="flex items-center p-4 border-b border-main-color border-opacity-10 hover:bg-main-color hover:bg-opacity-5 cursor-pointer transition-colors"
-                                            @click="toggleProductSelection(producto.id)">
-                                            <div class="flex items-center justify-center mr-3">
-                                                <div class="w-5 h-5 rounded border border-main-color flex items-center justify-center"
-                                                    :class="{ 'bg-main-color': isProductSelected(producto.id) }">
-                                                    <svg v-if="isProductSelected(producto.id)"
-                                                        xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white"
-                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2" d="M5 13l4 4L19 7" />
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                            <div class="flex-1">
-                                                <div class="flex flex-col">
-                                                    <h3 class="font-medium text-gray-900">{{ producto.titulo }}</h3>
-                                                    <div class="flex items-center mt-1">
-                                                        <span v-if="producto.categoria"
-                                                            class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-main-color bg-opacity-10 text-main-color">
-                                                            {{ producto.categoria.titulo || 'Sin categoría' }}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> <!-- Footer del modal -->
-                        <div class="px-6 py-4 bg-gray-50 flex justify-end gap-3 border-t">
-                            <button @click="closeModal" class="btn-secondary px-4 py-2 flex items-center gap-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                                Cancelar
-                            </button>
-                            <button @click="submitSelectedProducts"
-                                :disabled="selectedProducts.length === 0 || form.processing"
-                                class="btn-primary px-4 py-2 flex items-center gap-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 13l4 4L19 7" />
-                                </svg>
-                                <span v-if="form.processing">Guardando...</span>
-                                <span v-else>Agregar {{ selectedProducts.length }} producto{{ selectedProducts.length
-                                    !== 1 ?
-                                    's' : ''
-                                }}</span>
-                            </button>
-                        </div>
-                    </div>
-                </Transition>
-            </div>
-        </Transition>
 
         <!-- Modal de Crear -->
         <Transition name="modal">
@@ -723,7 +560,6 @@ const toggleDestacado = (id, isChecked) => {
                                 <div v-for="column in columns" :key="column" class="mb-4 ">
 
                                     <template v-if="column === 'destacado'"></template>
-                                    <template v-else-if="column === 'productos relacionados'"></template>
                                     <!-- Manejo de campo path/imagen -->
                                     <template v-else-if="column === 'path'">
                                         <label :for="column" class="block font-medium text-gray-700 mb-1">Imagen</label>
@@ -820,24 +656,6 @@ const toggleDestacado = (id, isChecked) => {
                                         </div>
                                     </template>
 
-                                    <template v-else-if="column === 'tituloen'">
-                                        <label :for="column" class="block font-medium text-gray-700 mb-1">
-                                            Titulo en ingles
-                                        </label>
-                                        <input :id="column" :name="column" v-model="createFormData[column]" type="text"
-                                            class="w-full border border-main-color px-4 py-2 rounded-md focus:ring-2 focus:ring-opacity-50 focus:ring-main-color focus:border-main-color"
-                                            required>
-                                    </template>
-                                    <template v-else-if="column === 'tituloport'">
-                                        <label :for="column" class="block font-medium text-gray-700 mb-1">
-                                            Titulo en portugues
-                                        </label>
-                                        <input :id="column" :name="column" v-model="createFormData[column]" type="text"
-                                            class="w-full border border-main-color px-4 py-2 rounded-md focus:ring-2 focus:ring-opacity-50 focus:ring-main-color focus:border-main-color"
-                                            required>
-                                    </template>
-
-                                    <!-- Campo descripcion con QuillEditor -->
                                     <template v-else-if="column === 'descripcion'">
                                         <label :for="column" class="block font-medium text-gray-700 mb-1">
                                             Descripcion
@@ -847,23 +665,15 @@ const toggleDestacado = (id, isChecked) => {
                                             v-on:text_changed="createFormData[column] = $event" />
                                     </template>
 
-                                    <template v-else-if="column === 'descripcionen'">
+                                    <template v-else-if="column === 'especificaciones'">
                                         <label :for="column" class="block font-medium text-gray-700 mb-1">
-                                            Descripcion en ingles
+                                            Especificaciones
                                         </label>
-                                        <QuillEditor :unique_ref="`create_${column}`" placeholder="Descripcion"
+                                        <QuillEditor :unique_ref="`create_${column}`" placeholder="Especificaciones"
                                             :initial_content="createFormData[column]"
                                             v-on:text_changed="createFormData[column] = $event" />
                                     </template>
 
-                                    <template v-else-if="column === 'descripcionport'">
-                                        <label :for="column" class="block font-medium text-gray-700 mb-1">
-                                            Descripcion en portugues
-                                        </label>
-                                        <QuillEditor :unique_ref="`create_${column}`" placeholder="Descripcion"
-                                            :initial_content="createFormData[column]"
-                                            v-on:text_changed="createFormData[column] = $event" />
-                                    </template>
                                     <!-- Campo de texto normal para otros casos -->
                                     <template v-else>
                                         <label :for="column" class="block font-medium text-gray-700 mb-1">
@@ -931,7 +741,6 @@ const toggleDestacado = (id, isChecked) => {
                                 <div v-for="column in columns" :key="column" class="mb-4">
 
                                     <template v-if="column === 'destacado'"></template>
-                                    <template v-else-if="column === 'productos relacionados'"></template>
                                     <!-- Manejo de campos específicos -->
                                     <template v-else-if="column === 'path'">
                                         <label :for="`edit_${column}`"
@@ -1054,25 +863,6 @@ const toggleDestacado = (id, isChecked) => {
                                         </div>
                                     </template>
 
-                                    <template v-else-if="column === 'tituloen'">
-                                        <label :for="`edit_${column}`" class="block font-medium text-gray-700 mb-1">
-                                            Titulo en ingles
-                                        </label>
-                                        <input :name="column" v-model="editFormData[column]" :id="`edit_${column}`"
-                                            type="text"
-                                            class="w-full border border-main-color px-4 py-2 rounded-md focus:ring-2 focus:ring-opacity-50 focus:ring-main-color focus:border-main-color">
-                                    </template>
-
-                                    <template v-else-if="column === 'tituloport'">
-                                        <label :for="`edit_${column}`" class="block font-medium text-gray-700 mb-1">
-                                            Titulo en portugues
-                                        </label>
-                                        <input :name="column" v-model="editFormData[column]" :id="`edit_${column}`"
-                                            type="text"
-                                            class="w-full border border-main-color px-4 py-2 rounded-md focus:ring-2 focus:ring-opacity-50 focus:ring-main-color focus:border-main-color">
-                                    </template>
-
-                                    <!-- Campo descripcion con QuillEditor -->
                                     <template v-else-if="column === 'descripcion'">
                                         <label :for="`edit_${column}`" class="block font-medium text-gray-700 mb-1">
                                             Descripcion
@@ -1081,19 +871,12 @@ const toggleDestacado = (id, isChecked) => {
                                             :initial_content="editFormData[column]"
                                             v-on:text_changed="editFormData[column] = $event" />
                                     </template>
-                                    <template v-else-if="column === 'descripcionen'">
+
+                                    <template v-else-if="column === 'especificaciones'">
                                         <label :for="`edit_${column}`" class="block font-medium text-gray-700 mb-1">
-                                            Descripcion en ingles
+                                            Especificaciones
                                         </label>
-                                        <QuillEditor :unique_ref="`edit_${column}`" placeholder="Descripcion"
-                                            :initial_content="editFormData[column]"
-                                            v-on:text_changed="editFormData[column] = $event" />
-                                    </template>
-                                    <template v-else-if="column === 'descripcionport'">
-                                        <label :for="`edit_${column}`" class="block font-medium text-gray-700 mb-1">
-                                            Descripcion en portugues
-                                        </label>
-                                        <QuillEditor :unique_ref="`edit_${column}`" placeholder="Descripcion"
+                                        <QuillEditor :unique_ref="`edit_${column}`" placeholder="Especificaciones"
                                             :initial_content="editFormData[column]"
                                             v-on:text_changed="editFormData[column] = $event" />
                                     </template>

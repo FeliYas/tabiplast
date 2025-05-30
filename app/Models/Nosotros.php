@@ -8,9 +8,9 @@ class Nosotros extends Model
 {
     protected $fillable = [
         'path',
+        'titulo',
         'descripcion',
-        'descripcionen',
-        'descripcionport',
+        'video',
     ];
 
 }

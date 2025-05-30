@@ -11,8 +11,9 @@ class Contacto extends Model
     protected $fillable = [
         'direccion',
         'telefono',
-        'telefono2',
         'email',
+        'facebook',
+        'instagram',
         'iframe',
         'whatsapp'
     ];

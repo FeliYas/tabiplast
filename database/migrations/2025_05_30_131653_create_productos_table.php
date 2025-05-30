@@ -13,15 +13,12 @@ return new class extends Migration
     {
         Schema::create('productos', function (Blueprint $table) {
             $table->id();
-            $table->string('orden')->nullable();
+            $table->integer('orden')->nullable();
             $table->string('titulo')->nullable();
-            $table->string('tituloen')->nullable();
-            $table->string('tituloport')->nullable();
             $table->mediumText('descripcion')->nullable();
-            $table->mediumText('descripcionen')->nullable();
-            $table->mediumText('descripcionport')->nullable();
             $table->foreignId('categoria_id')->nullable()->constrained('categorias')->onDelete('cascade');
             $table->string('ficha')->nullable();
+            $table->string('video')->nullable();
             $table->timestamps();
         });
     }

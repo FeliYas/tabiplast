@@ -7,7 +7,7 @@ defineOptions({
 });
 
 // Definición de las columnas
-const columns = ['orden', 'path', 'titulo', 'tituloen', 'tituloport', 'descripcion', 'descripcionen', 'descripcionport'];
+const columns = ['orden', 'path', 'epigrafe', 'titulo', 'descripcion', 'especificaciones'];
 
 // Definición de rutas
 const createRoute = route('novedades.store');

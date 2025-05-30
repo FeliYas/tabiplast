@@ -34,10 +34,6 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/nosotros', [FrontNosotrosController::class, 'index'])->name('nosotros');
 Route::get('/productos/{id?}', [ProductosController::class, 'index'])->name('productos');
 Route::get('/producto/{id}', [ProductosController::class, 'show'])->name('producto');
-Route::get('/aplicaciones', [FrontAplicacionesController::class, 'index'])->name('aplicaciones');
-Route::get('/aplicaciones/{id}', [FrontAplicacionesController::class, 'show'])->name('aplicacion');
-Route::get('/carta-de-colores', [FrontColorController::class, 'index'])->name('colores');
-Route::get('/calidad', [FrontCalidadController::class, 'index'])->name('calidad');
 Route::get('/novedades', [FrontNovedadesController::class, 'index'])->name('novedades');
 Route::get('/novedades/{id}', [FrontNovedadesController::class, 'show'])->name('novedad');
 Route::get('/contacto', [FrontContactoController::class, 'index'])->name('contacto');
@@ -66,10 +62,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/admin/home/contenido/update/{id}', [ContenidoController::class, 'update'])->name('contenido.update');
 
     //rutas de las nosotros del dashboard
-    Route::get('/admin/nosotros/banner', [BannerController::class, 'index'])->name('banners.dashboard');
-    Route::post('/admin/nosotros/banner/create', [BannerController::class, 'store'])->name('banner.store');
-    Route::put('/admin/nosotros/banner/update/{id}', [BannerController::class, 'update'])->name('banner.update');
-    Route::delete('/admin/nosotros/banner/delete/{id}', [BannerController::class, 'destroy'])->name('banner.destroy');
     Route::get('/admin/nosotros', [NosotrosController::class, 'index'])->name('nosotros.dashboard');
     Route::post('/admin/nosotros/update/{id}', [NosotrosController::class, 'update'])->name('nosotros.update');
 
@@ -90,25 +82,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/admin/productos/productos/imagenes/store', [ProductoImgController::class, 'store'])->name('imagenes.store');
     Route::put('/admin/productos/productos/imagenes/update/{id}', [ProductoImgController::class, 'update'])->name('imagenes.update');
     Route::delete('/admin/productos/productos/imagenes/delete/{id}', [ProductoImgController::class, 'destroy'])->name('imagenes.destroy');
-    
-    //rutas de aplicaciones del dashboard
-    Route::get('/admin/aplicaciones', [AplicacionesController::class, 'index'])->name('aplicaciones.dashboard');
-    Route::post('/admin/aplicaciones/store', [AplicacionesController::class, 'store'])->name('aplicaciones.store');
-    Route::put('/admin/aplicaciones/update/{id}', [AplicacionesController::class, 'update'])->name('aplicaciones.update');
-    Route::delete('/admin/aplicaciones/delete/{id}', [AplicacionesController::class, 'destroy'])->name('aplicaciones.destroy');
-    Route::get('/admin/aplicaciones/relacionados/{id}', [AplicacionProductoController::class, 'index'])->name('relacionados.dashboard'); 
-    Route::post('/admin/aplicaciones/relacionados/store', [AplicacionProductoController::class, 'store'])->name('relacionados.store');
-    Route::delete('/admin/aplicaciones/relacionados/delete/{id}', [AplicacionProductoController::class, 'destroy'])->name('relacionados.destroy');
-
-    //rutas de colores del dashboard
-    Route::get('/admin/colores', [ColorController::class, 'index'])->name('colores.dashboard');
-    Route::post('/admin/colores/store', [ColorController::class, 'store'])->name('colores.store');
-    Route::put('/admin/colores/update/{id}', [ColorController::class, 'update'])->name('colores.update');
-    Route::delete('/admin/colores/delete/{id}', [ColorController::class, 'destroy'])->name('colores.destroy');
-
-    //rutas de calidad del dashboard
-    Route::get('/admin/calidad', [CalidadController::class, 'index'])->name('calidad.dashboard');
-    Route::post('/admin/calidad/update/{id}', [CalidadController::class, 'update'])->name('calidad.update');
 
     //rutas de las novedades del dashboard
     Route::get('/admin/novedades', [NovedadesController::class, 'index'])->name('novedades.dashboard');
@@ -118,7 +91,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     //rutas del contacto del dashboard
     Route::get('/admin/contacto', [ContactoController::class, 'index'])->name('contacto.dashboard');
-    Route::put('/admin/contacto/update/{id}', [ContactoController::class, 'update'])->name('contacto.update');
+    Route::post('/admin/contacto/update/{id}', [ContactoController::class, 'update'])->name('contacto.update');
     
     //rutas de los logos del dashboard
     Route::get('/admin/logos', [LogoController::class, 'index'])->name('logos.dashboard');

@@ -124,43 +124,43 @@
                 <a href="{{ route('nosotros') }}" class="relative">
                     {{ __('NOSOTROS') }}
                     @if ($currentRoute == 'nosotros')
-                        <span class="absolute left-0 -bottom-10 2xl:-bottom-16 w-full h-[7px] bg-[#E12328]"></span>
+                        <span class="absolute left-0 -bottom-10 2xl:-bottom-16 w-full h-[7px] bg-[#c87800]"></span>
                     @endif
                 </a>
                 <a href="{{ route('productos') }}" class="relative">
                     {{ __('PRODUCTOS') }}
                     @if ($currentRoute == 'productos' || $currentRoute == 'producto')
-                        <span class="absolute left-0 -bottom-10 2xl:-bottom-16 w-full h-[7px] bg-[#E12328]"></span>
+                        <span class="absolute left-0 -bottom-10 2xl:-bottom-16 w-full h-[7px] bg-[#c87800]"></span>
                     @endif
                 </a>
                 <a href="{{ route('aplicaciones') }}" class="relative">
                     {{ __('APLICACIONES') }}
                     @if ($currentRoute == 'aplicaciones')
-                        <span class="absolute left-0 -bottom-10 2xl:-bottom-16 w-full h-[7px] bg-[#E12328]"></span>
+                        <span class="absolute left-0 -bottom-10 2xl:-bottom-16 w-full h-[7px] bg-[#c87800]"></span>
                     @endif
                 </a>
                 <a href="{{ route('colores') }}" class="relative">
                     {{ __('CARTA DE COLORES') }}
                     @if ($currentRoute == 'colores')
-                        <span class="absolute left-0 -bottom-10 2xl:-bottom-16 w-full h-[7px] bg-[#E12328]"></span>
+                        <span class="absolute left-0 -bottom-10 2xl:-bottom-16 w-full h-[7px] bg-[#c87800]"></span>
                     @endif
                 </a>
                 <a href="{{ route('calidad') }}" class="relative">
                     {{ __('CALIDAD') }}
                     @if ($currentRoute == 'calidad')
-                        <span class="absolute left-0 -bottom-10 2xl:-bottom-16 w-full h-[7px] bg-[#E12328]"></span>
+                        <span class="absolute left-0 -bottom-10 2xl:-bottom-16 w-full h-[7px] bg-[#c87800]"></span>
                     @endif
                 </a>
                 <a href="{{ route('novedades') }}" class="relative">
                     {{ __('NOVEDADES') }}
                     @if ($currentRoute == 'novedades' || $currentRoute == 'novedad')
-                        <span class="absolute left-0 -bottom-10 2xl:-bottom-16 w-full h-[7px] bg-[#E12328]"></span>
+                        <span class="absolute left-0 -bottom-10 2xl:-bottom-16 w-full h-[7px] bg-[#c87800]"></span>
                     @endif
                 </a>
                 <a href="{{ route('contacto') }}" class="relative">
                     {{ __('CONTACTO') }}
                     @if ($currentRoute == 'contacto')
-                        <span class="absolute left-0 -bottom-10 2xl:-bottom-16 w-full h-[7px] bg-[#E12328]"></span>
+                        <span class="absolute left-0 -bottom-10 2xl:-bottom-16 w-full h-[7px] bg-[#c87800]"></span>
                     @endif
                 </a>
             </div>

@@ -8,9 +8,8 @@ class Categoria extends Model
 {
     protected $fillable = [
         'orden',
+        'path',
         'titulo',
-        'tituloen',
-        'tituloport',
     ];
     
 }

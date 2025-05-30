@@ -27,7 +27,7 @@
 
         /* Encabezado */
         .header {
-            background-color: #E12328;
+            background-color: #c87800;
             padding: 30px;
             text-align: center;
         }
@@ -66,7 +66,7 @@
             font-size: 18px;
             margin-top: 0;
             margin-bottom: 15px;
-            color: #E12328;
+            color: #c87800;
             border-bottom: 1px solid #e0e0e0;
             padding-bottom: 10px;
         }
@@ -97,7 +97,7 @@
             font-size: 18px;
             margin-top: 0;
             margin-bottom: 15px;
-            color: #E12328;
+            color: #c87800;
             border-bottom: 1px solid #e0e0e0;
             padding-bottom: 10px;
         }
