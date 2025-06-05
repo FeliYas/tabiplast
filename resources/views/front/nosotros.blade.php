@@ -6,117 +6,80 @@
 @section('title', __('Nosotros'))
 
 @section('content')
-    <div class="relative">
-        <!-- Breadcrumb fijo -->
-        <div class="hidden lg:block fixed top-0 left-0 w-full z-50 bg-[#F2F2F2] opacity-[0.643] lg:mt-[184px]">
-            <div class="max-w-[90%] lg:max-w-[1224px] mx-auto text-black text-[13px] font-medium py-2">
-                <div class="flex gap-1">
-                    <a href="{{ route('home') }}" class="hover:underline">{{ __('INICIO') }}</a>
-                    <span>|</span>
-                    <a href="{{ route('nosotros') }}" class="hover:underline">{{ __('NOSOTROS') }}</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Banner Slider -->
-        <div class="relative overflow-hidden">
-            <div id="bannerSlider" class="flex transition-transform duration-500 ease-in-out"
-                style="transform: translateX(0%);">
-                @foreach ($banners as $banner)
-                    <div class="w-full flex-shrink-0">
-                        <img src="{{ $banner->path }}" alt="Banner" class="w-full h-[200px] lg:h-[448px] object-cover">
+    <div>
+        <div class="overflow-hidden">
+            <div class="relative max-w-[90%] lg:max-w-[1224px] mx-auto">
+                <div class="absolute top-6 left-0">
+                    <div class="flex gap-1 text-xs">
+                        <a href="{{ route('home') }}" class="font-bold hover:underline">{{ __('Inicio') }}</a>
+                        <span>></span>
+                        <a href="{{ route('nosotros') }}" class="hover:underline">{{ __('Nosotros') }}</a>
                     </div>
-                @endforeach
-            </div>
-
-            <!-- Indicadores circulares -->
-            @if (count($banners) > 1)
-                <div class="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex gap-2">
-                    @foreach ($banners as $index => $banner)
-                        <button onclick="goToSlide({{ $index }})"
-                            class="slider-dot w-4 h-4 rounded-full transition-all duration-300 bg-white {{ $index === 0 ? 'opacity-100' : 'opacity-60' }}"
-                            data-slide="{{ $index }}">
-                        </button>
-                    @endforeach
                 </div>
-            @endif
-        </div>
-        <div class="max-w-[90%] lg:max-w-[1224px] mx-auto py-12 flex flex-col lg:flex-row gap-14">
-            <div class="custom-summernote font-light text-black leading-5 text-[17px]">
-                <p>{!! getLocalizedField($nosotros, 'descripcion') !!}</p>
+                <div class="absolute top-40">
+                    <h2 class=" font-bold text-[40px]">{{ __('Nosotros') }}</h2>
+                </div>
             </div>
-            <img src="{{ $nosotros->path }}" alt="{{ __('Imagen de Nosotros') }}" class="lg:w-1/2 h-[289px] object-cover">
+            <img src="{{ $nosotros->banner }}" alt="{{ __('Banner de Nosotros') }}" class="w-full h-[310px] object-cover">
+        </div>
+        <div class="max-w-[90%] lg:max-w-[1224px] mx-auto py-20 flex flex-col lg:flex-row gap-10.5">
+            <div class="flex flex-col gap-4 lg:w-1/2 text-black">
+                <h2 class="font-bold text-[32px]">{{ $nosotros->titulo }}</h2>
+                <div class="custom-summernote leading-6">
+                    <p>{!! $nosotros->descripcion !!}</p>
+                </div>
+            </div>
+            <img src="{{ $nosotros->path }}" alt="{{ __('Imagen de Nosotros') }}"
+                class="lg:w-1/2 h-[450px] rounded-[10px] object-cover">
+        </div>
+        <div class="bg-gray-100">
+            <div class="max-w-[90%] lg:max-w-[1224px] mx-auto pb-16">
+                <div class="flex flex-col gap-6 py-15">
+                    <h2 class="text-black text-[32px] font-bold">{{ __('¿Por qué elegirnos?') }}</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        @foreach ($tarjetas as $tarjeta)
+                            <x-tarjeta-nosotros :tarjeta="$tarjeta" />
+                        @endforeach
+                    </div>
+                </div>
+                <div class="relative w-full h-[688px] rounded-[10px] overflow-hidden group">
+                    <video id="nosotrosVideo" src="{{ $nosotros->video }}"
+                        class="w-full h-full object-cover rounded-[10px]" style="display:block;" preload="none"></video>
+                    <div id="videoOverlay"
+                        class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center transition-opacity duration-500 z-10 cursor-pointer">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"
+                                fill="none">
+                                <path
+                                    d="M39.9998 73.3333C58.4093 73.3333 73.3332 58.4094 73.3332 40C73.3332 21.5905 58.4093 6.66663 39.9998 6.66663C21.5903 6.66663 6.6665 21.5905 6.6665 40C6.6665 58.4094 21.5903 73.3333 39.9998 73.3333Z"
+                                    stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M33.3332 26.6666L53.3332 40L33.3332 53.3333V26.6666Z" stroke="white"
+                                    stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const video = document.getElementById('nosotrosVideo');
+                        const overlay = document.getElementById('videoOverlay');
+                        // Oculta controles hasta que se hace play
+                        video.removeAttribute('controls');
+                        overlay.addEventListener('click', function() {
+                            overlay.style.opacity = 0;
+                            setTimeout(() => overlay.style.display = 'none', 500);
+                            video.setAttribute('controls', 'controls');
+                            video.play();
+                        });
+                        // Si el usuario pausa el video, vuelve a mostrar el overlay (opcional)
+                        // video.addEventListener('pause', function () {
+                        //     overlay.style.display = 'flex';
+                        //     overlay.style.opacity = 1;
+                        //     video.removeAttribute('controls');
+                        // });
+                    });
+                </script>
+            </div>
         </div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const slider = document.getElementById('bannerSlider');
-            const dots = document.querySelectorAll('.slider-dot');
-            const totalSlides = {{ count($banners) }};
-            let currentSlide = 0;
-            let slideInterval = null;
-            let isHovered = false;
-
-            window.goToSlide = function(slideIndex) {
-                currentSlide = slideIndex;
-                updateSlider();
-                resetTimer();
-            }
-
-            function updateSlider() {
-                const translateX = -currentSlide * 100;
-                slider.style.transform = `translateX(${translateX}%)`;
-
-                dots.forEach((dot, index) => {
-                    if (index === currentSlide) {
-                        dot.classList.add('opacity-100');
-                        dot.classList.remove('opacity-60');
-                    } else {
-                        dot.classList.remove('opacity-100');
-                        dot.classList.add('opacity-60');
-                    }
-                });
-            }
-
-            function nextSlide() {
-                currentSlide = (currentSlide + 1) % totalSlides;
-                updateSlider();
-            }
-
-            function clearTimer() {
-                if (slideInterval) {
-                    clearInterval(slideInterval);
-                    slideInterval = null;
-                }
-            }
-
-            function startTimer() {
-                if (!isHovered && totalSlides > 1) {
-                    clearTimer();
-                    slideInterval = setInterval(nextSlide, 8000);
-                }
-            }
-
-            function resetTimer() {
-                clearTimer();
-                startTimer();
-            }
-
-            if (totalSlides > 1) {
-                startTimer();
-            }
-
-            const sliderContainer = slider.parentElement;
-
-            sliderContainer.addEventListener('mouseenter', function() {
-                isHovered = true;
-                clearTimer();
-            });
-
-            sliderContainer.addEventListener('mouseleave', function() {
-                isHovered = false;
-                startTimer();
-            });
-        });
-    </script>
 @endsection

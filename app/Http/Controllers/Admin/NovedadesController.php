@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Banner;
 use App\Models\Logo;
 use App\Models\Novedad;
 use App\Models\Novedade;
@@ -18,11 +19,18 @@ class NovedadesController extends Controller
         foreach ($novedades as $novedad) {
             $novedad->path = Storage::url($novedad->path);
         }
+        $banner = Banner::where('seccion', 'novedades')->first();
+        if ($banner) {
+            $banner->path = Storage::url($banner->path);
+        } else {
+            $banner = null;
+        }
         $logo = Logo::where('seccion', 'dashboard')->first();
         $logo->path = Storage::url($logo->path);
         return inertia('Admin/Novedades', [
             'novedades' => $novedades,
-            'logo' => $logo
+            'logo' => $logo,
+            'banner' => $banner,
         ]);
     }
     public function store(Request $request)
@@ -86,8 +94,7 @@ class NovedadesController extends Controller
                 Storage::delete($ruta);
             }
             
-            $imagePath=$file->store('images');
-            
+            $imagePath=$file->store('images');           
         }
 
         $novedades->orden              = $request->orden;
@@ -120,5 +127,28 @@ class NovedadesController extends Controller
 
         // Redireccionar al index con un mensaje de éxito
         return redirect()->route('novedades.dashboard')->with('message', 'Novedad eliminada exitosamente');
+    }
+    public function banner(Request $request, $id)
+    {
+        $validator = Validator::make(request()->all(), [
+            'path' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+        if ($validator->fails()) {
+            return back()->witherrors($validator->messages()->first());
+        }
+        $banner = Banner::where('seccion', 'novedades')->findOrFail($id);
+
+        if ($request->hasFile('path')) {
+            $ruta = $banner->path;
+            $file = $request->file('path');
+            if (Storage::exists($ruta)) {
+                Storage::delete($ruta);
+            }
+            $imagePath = $file->store('images');
+        }
+        $banner->path = isset($imagePath) ? $imagePath : $banner->path;
+        $banner->save();
+
+        return redirect()->route('novedades.dashboard')->with('message', 'Banner actualizado exitosamente');
     }
 }

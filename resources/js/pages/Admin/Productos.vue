@@ -7,14 +7,15 @@ defineOptions({
 });
 
 // Definición de las columnas
-const columns = ['orden', 'titulo', 'tituloen', 'tituloport', 'descripcion', 'descripcionen', 'descripcionport', 'categoria_id', 'ficha', 'destacado'];
+const columns = ['orden', 'titulo', 'descripcion', 'categoria_id', 'ficha', 'video', 'adword', 'destacado'];
 
 // Definición de rutas dinámicas
 const createRoute = route('productos.store');
 const updateRoute = (id) => route('productos.update', { id });
 const deleteRoute = (id) => route('productos.destroy', { id });
-const imgsRoute = (id) => route('imagenes.dashboard', { id });
 const destacadoRoute = (id) => route('productos.toggleDestacado', { id });
+const imgsRoute = (id) => route('imagenes.dashboard', { id });
+const colocacionRoute = (id) => route('colocacion.dashboard', { id });
 
 const props = defineProps({
     logo: {
@@ -39,7 +40,7 @@ const props = defineProps({
         </div>
         <!-- Línea -->
         <hr class="border-t-[3px] border-main-color rounded">
-        <DataTable :columns="columns" :data="productos" :categorias="categorias" :createRoute="createRoute" :updateRoute="updateRoute"
-            :deleteRoute="deleteRoute" :imgsRoute="imgsRoute" :toggleDestacadoRoute="destacadoRoute"/>
+        <DataTable :columns="columns" :data="productos" :categorias="categorias" :createRoute="createRoute"
+            :updateRoute="updateRoute" :deleteRoute="deleteRoute" :imgsRoute="imgsRoute" :colocacionRoute="colocacionRoute" :toggleDestacadoRoute="destacadoRoute" />
     </div>
 </template>

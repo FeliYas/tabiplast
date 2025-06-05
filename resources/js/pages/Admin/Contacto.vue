@@ -37,6 +37,7 @@ const form = useForm({
     iframe: props.contacto.iframe,
     instagram: props.contacto.instagram,
     facebook: props.contacto.facebook,
+    linkedin: props.contacto.linkedin,
     banner: null // This will hold the file object
 });
 
@@ -135,7 +136,7 @@ const submit = () => {
                         <div v-if="bannerPreview" class="mt-4">
                             <img :src="bannerPreview.startsWith('blob:') || bannerPreview.startsWith('data:') ? bannerPreview : `/storage/${bannerPreview}`"
                                 alt="Banner preview" class="h-100 w-full object-cover rounded-lg shadow-sm border">
-                            <p class="text-xs text-gray-500 mt-1">Vista previa del banner</p>
+                            <span class="text-xs text-gray-400 italic">Recomendación: 1400x400 px</span>
                         </div>
                     </div>
 
@@ -249,6 +250,25 @@ const submit = () => {
                             class="pl-10 p-2 bg-white block border border-gray-300 w-full h-10 rounded-lg shadow-sm focus:border-main-color focus:ring focus:ring-main-color focus:ring-opacity-20 transition-all duration-200"
                             placeholder="https://facebook.com/pagina">
                     </div>
+
+                    <!-- Linkedin con icono -->
+                    <div class="relative group">
+                        <div
+                            class="absolute left-3 top-8 text-gray-400 transition-all duration-200 group-focus-within:text-main-color">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 8a6 6 0 0 1 6 6v6H2v-6a6 6 0 0 1 6-6h8z"></path>
+                                <circle cx="8.5" cy="13.5" r="1.5"></circle>
+                                <circle cx="15.5" cy="13.5" r="1.5"></circle>
+                            </svg>
+                        </div>
+                        <label for="linkedin"
+                            class="block text-sm font-medium text-gray-700 mb-1 transition-all duration-200 group-focus-within:text-main-color">LinkedIn</label>
+                        <input type="url" id="linkedin" v-model="form.linkedin"
+                            class="pl-10 p-2 bg-white block border border-gray-300 w-full h-10 rounded-lg shadow-sm focus:border-main-color focus:ring focus:ring-main-color focus:ring-opacity-20 transition-all duration-200"
+                            placeholder="https://linkedin.com/in/usuario">
+                    </div>
+
                     <div class="relative group col-span-2">
                         <div
                             class="absolute left-3 top-8 text-gray-400 transition-all duration-200 group-focus-within:text-main-color">

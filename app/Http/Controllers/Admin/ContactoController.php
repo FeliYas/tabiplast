@@ -42,6 +42,7 @@ class ContactoController extends Controller
             'iframe' => 'nullable|string',
             'instagram' => 'nullable|string|max:255',
             'facebook' => 'nullable|string|max:255',
+            'linkedin' => 'nullable|string|max:255',
             'banner' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:100000',
         ]);
         if ($validator->fails()) {
@@ -69,6 +70,7 @@ class ContactoController extends Controller
         $contacto->iframe = $request->iframe;
         $contacto->instagram = $request->instagram;
         $contacto->facebook = $request->facebook;
+        $contacto->linkedin = $request->linkedin;
 
         $contacto->save();
         

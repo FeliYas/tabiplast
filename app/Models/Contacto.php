@@ -14,6 +14,7 @@ class Contacto extends Model
         'email',
         'facebook',
         'instagram',
+        'linkedin',
         'iframe',
         'whatsapp'
     ];

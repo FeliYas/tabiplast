@@ -12,5 +12,6 @@ class Internacional extends Model
         'path',
         'titulo',
         'descripcion',
+        'banner',
     ];
 }

@@ -3,6 +3,8 @@ import { ref, reactive, onMounted, inject } from 'vue';
 import { router, useForm } from '@inertiajs/vue3';
 import DashboardLayout from '@/layouts/DashboardLayout.vue';
 import DeleteModal from '@/components/Modales/DeleteModal.vue';
+import CreateModal from '@/components/Modales/CreateModal.vue';
+import EditModal from '@/components/Modales/EditModal.vue';
 
 defineOptions({
   layout: DashboardLayout
@@ -191,7 +193,7 @@ const getExtension = (path) => {
       <!-- Lista de sliders -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div v-for="slider in sliders" :key="slider.id"
-          class="bg-gray-50 p-4 rounded-md border border-main-color flex flex-col justify-between">
+          class="bg-gray-50 p-4 rounded-md border border-gray-200 flex flex-col justify-between">
           <!-- Imagen o Video -->
           <img v-if="isImage(slider.path)" :src="slider.path" :alt="slider.titulo"
             class="object-cover w-full h-[246px] border border-gray-300">
@@ -233,198 +235,48 @@ const getExtension = (path) => {
       </div>
     </div>
 
-    <!-- Modal de creación con transición -->
-    <Transition enter-active-class="transition duration-300 ease-out" enter-from-class="transform scale-95 opacity-0"
-      enter-to-class="transform scale-100 opacity-100" leave-active-class="transition duration-200 ease-in"
-      leave-from-class="transform scale-100 opacity-100" leave-to-class="transform scale-95 opacity-0">
-      <div v-if="showCreateModal" class="fixed inset-0 z-50 flex items-center justify-center px-4">
-        <!-- Overlay con transición -->
-        <Transition enter-active-class="transition-opacity duration-300" enter-from-class="opacity-0"
-          enter-to-class="opacity-60" leave-active-class="transition-opacity duration-200" leave-from-class="opacity-60"
-          leave-to-class="opacity-0">
-          <div class="absolute inset-0 bg-black opacity-60 backdrop-blur-sm" @click="closeCreateModal"></div>
-        </Transition>
+    <!-- Modal de creación usando CreateModal -->
+    <CreateModal
+      v-if="showCreateModal"
+      :show="showCreateModal"
+      :columns="['orden', 'titulo', 'path']"
+      :categorias="[]"
+      :formData="createForm"
+      :fileInputLabel="createForm.fileLabel || 'Seleccionar archivo'"
+      :fichaInputLabel="'No aplica'"
+      :videoInputLabel="'No aplica'"
+      :recomendacion="'1400x500'"
+      :showPassword="false"
+      @close="closeCreateModal"
+      @submit="submitCreateForm"
+      @file-change="handleFileChange"
+      @ficha-change="()=>{}"
+      @video-change="()=>{}"
+      @toggle-password="()=>{}"
+    />
 
-        <!-- Modal -->
-        <div class="relative w-full max-w-[700px] z-50 bg-white rounded-lg shadow-lg max-h-[90vh] overflow-y-auto">
-          <form @submit.prevent="submitCreateForm" class="bg-white rounded-lg shadow-lg w-full">
-            <!-- Header -->
-            <div class="bg-main-color bg-opacity-10 px-6 py-4 border-b border-main-color border-opacity-20">
-              <h2 class="text-xl font-semibold flex items-center gap-2">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 4V20M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-                Crear Slider
-              </h2>
-            </div>
-
-            <div class="p-6 text-black">
-              <!-- Campo Orden y Título en la misma fila horizontal -->
-
-              <div class="w-full mb-4">
-                <label for="orden" class="block font-medium text-gray-700 mb-1">
-                  Orden *
-                </label>
-                <input v-model="createForm.orden" id="orden" type="text" required
-                  class="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-2 focus:ring-opacity-50 focus:ring-main-color focus:border-main-color"
-                  placeholder="Posición de orden">
-              </div>
-
-              <div class="mb-4 w-full">
-                <label for="titulo" class="block font-medium text-gray-700 mb-1">
-                  Título *
-                </label>
-                <input v-model="createForm.titulo" id="titulo" type="text" required
-                  class="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-2 focus:ring-opacity-50 focus:ring-main-color focus:border-main-color"
-                  placeholder="Título del slider">
-              </div>
-
-              <!-- Campo Archivo (Path) -->
-              <div class="mb-4">
-                <label for="path" class="block font-medium text-gray-700 mb-1">
-                  Archivo (Imagen o Video) *
-                </label>
-                <div class="relative w-full">
-                  <label for="path" id="customFileLabel"
-                    class="block border border-main-color rounded-md bg-white px-4 py-2 w-full text-gray-600 cursor-pointer text-center">
-                    {{ createForm.fileLabel }}
-                  </label>
-                  <input type="file" id="path" ref="fileInput" @change="handleFileChange" class="hidden" required>
-                </div>
-                <p class="text-xs text-gray-400 mt-1">
-                  Formatos permitidos: JPEG, PNG, JPG, GIF, SVG, MP4, WEBM, OGG. Recomendacion: 1400x500 px
-                </p>
-
-                <!-- Vista previa del archivo -->
-                <div v-if="createForm.filePreview" class="mt-3">
-                  <p class="block text-sm text-gray-700">Vista previa:</p>
-                  <img :src="createForm.filePreview" alt="Vista previa de la imagen"
-                    class="mt-2 max-h-40 border border-main-color rounded-md bg-gray-200 p-2">
-                </div>
-              </div>
-            </div>
-
-            <!-- Footer con botones -->
-            <div class="px-6 py-4 bg-gray-50 flex justify-end gap-3">
-              <button type="button" @click="closeCreateModal" class="btn-secondary btn-icon-left">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-                Cancelar
-              </button>
-              <button type="submit" class="btn-primary btn-icon-left">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                Crear
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </Transition>
-
-    <!-- Modal de edición con transición -->
-    <Transition enter-active-class="transition duration-300 ease-out" enter-from-class="transform scale-95 opacity-0"
-      enter-to-class="transform scale-100 opacity-100" leave-active-class="transition duration-200 ease-in"
-      leave-from-class="transform scale-100 opacity-100" leave-to-class="transform scale-95 opacity-0">
-      <div v-if="showEditModal" class="fixed inset-0 z-50 flex items-center justify-center px-4">
-        <!-- Overlay con transición -->
-        <Transition enter-active-class="transition-opacity duration-300" enter-from-class="opacity-0"
-          enter-to-class="opacity-60" leave-active-class="transition-opacity duration-200" leave-from-class="opacity-60"
-          leave-to-class="opacity-0">
-          <div class="absolute inset-0 bg-black opacity-60 backdrop-blur-sm" @click="closeEditModal"></div>
-        </Transition>
-
-        <!-- Modal -->
-        <div class="relative w-full max-w-[700px] z-50 bg-white rounded-lg shadow-lg max-h-[90vh] overflow-y-auto">
-          <form @submit.prevent="submitEditForm" class="bg-white rounded-lg shadow-lg w-full">
-            <!-- Header -->
-            <div class="bg-main-color bg-opacity-10 px-6 py-2 border-b border-main-color border-opacity-20">
-              <h2 class="text-xl font-semibold flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>
-                Editar Slider
-              </h2>
-            </div>
-
-            <!-- Formulario -->
-            <div class="p-4 text-black">
-
-              <div class="w-full mb-4">
-                <label for="orden" class="block font-medium text-gray-700 mb-1">
-                  Orden *
-                </label>
-                <input v-model="editForm.orden" id="orden" type="text" required
-                  class="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-2 focus:ring-opacity-50 focus:ring-main-color focus:border-main-color"
-                  placeholder="Posición de orden">
-              </div>
-
-              <div class="mb-4 w-full">
-                <label for="edit_titulo" class="block font-medium text-gray-700 mb-1">
-                  Título *
-                </label>
-                <input v-model="editForm.titulo" id="edit_titulo" type="text" required
-                  class="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-2 focus:ring-opacity-50 focus:ring-main-color focus:border-main-color"
-                  placeholder="Título del slider">
-              </div>
-
-              <!-- Archivo actual -->
-              <div class="mb-2">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Archivo actual</label>
-                <div class="w-full h-[200px] border border-main-color rounded-md bg-gray-200 p-2">
-                  <img v-if="isImage(editForm.currentPath)" :src="editForm.currentPath" :alt="editForm.titulo"
-                    class="w-full h-full object-contain">
-                  <video v-else-if="isVideo(editForm.currentPath)" class="w-full h-full object-contain" controls>
-                    <source :src="editForm.currentPath" :type="`video/${getExtension(editForm.currentPath)}`">
-                    Tu navegador no soporta el formato de video.
-                  </video>
-                </div>
-              </div>
-
-              <!-- Campo Archivo (Path) -->
-              <div class="mb-2">
-                <label for="edit_path" class="block text-sm font-medium text-gray-700 mb-1">Nuevo archivo</label>
-                <div class="relative w-full">
-                  <label for="edit_path"
-                    class="block border border-main-color rounded-md bg-white px-4 py-2 w-full text-gray-600 cursor-pointer text-center">
-                    {{ editForm.fileLabel }}
-                  </label>
-                  <input type="file" id="edit_path" ref="editFileInput" @change="handleEditFileChange" class="hidden">
-                </div>
-                <p class="text-xs text-gray-400 mt-1">
-                  Formatos permitidos: JPEG, PNG, JPG, GIF, SVG, MP4, WEBM, OGG. Recomendacion: 1400x500 px
-                </p>
-              </div>
-            </div>
-
-            <!-- Footer con botones -->
-            <div class="px-4 py-3 bg-gray-50 flex justify-end gap-3">
-              <button type="button" @click="closeEditModal" class="btn-secondary btn-icon-left">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-                Cancelar
-              </button>
-              <button type="submit" class="btn-primary btn-icon-left">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                Actualizar
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </Transition>
+    <!-- Modal de edición usando EditModal -->
+    <EditModal
+      v-if="showEditModal"
+      :show="showEditModal"
+      :columns="['orden', 'titulo', 'path']"
+      :categorias="[]"
+      :formData="editForm"
+      :fileInputLabel="editForm.fileLabel || 'Seleccionar nuevo archivo (opcional)'"
+      :fichaInputLabel="'No aplica'"
+      :videoInputLabel="'No aplica'"
+      :imagePreview="editForm.currentPath"
+      :videoPreview="null"
+      :recomendacion="'1400x500'"
+      :showPassword="false"
+      @close="closeEditModal"
+      @submit="submitEditForm"
+      @file-change="handleEditFileChange"
+      @ficha-change="()=>{}"
+      @video-change="()=>{}"
+      @toggle-password="()=>{}"
+      @open-ficha="()=>{}"
+    />
 
     <!-- Usando el componente DeleteModal -->
     <DeleteModal v-if="showDeleteModal" :show="showDeleteModal" @close="closeDeleteModal" @confirm="submitDeleteForm"

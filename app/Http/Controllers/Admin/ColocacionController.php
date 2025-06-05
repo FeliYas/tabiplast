@@ -3,26 +3,26 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Colocacion;
 use App\Models\Logo;
 use App\Models\Producto;
-use App\Models\ProductoImg;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
-class ProductoImgController extends Controller
+class ColocacionController extends Controller
 {
     public function index($id)
     {
         $producto = Producto::findOrFail($id);
-        $imagenes = ProductoImg::where('producto_id', $id)->orderBy('orden', 'asc')->get();
-        foreach ($imagenes as $imagen) {
-            $imagen->path = Storage::url($imagen->path);
+        $colocaciones = Colocacion::where('producto_id', $id)->orderBy('orden', 'asc')->get();
+        foreach ($colocaciones as $colocacion) {
+            $colocacion->path = Storage::url($colocacion->path);
         }
         $logo = Logo::where('seccion', 'dashboard')->first();
         $logo->path = Storage::url($logo->path);
-        return inertia('Admin/Imagenes', [
-            'imagenes' => $imagenes,
+        return inertia('Admin/Colocacion', [
+            'colocaciones' => $colocaciones,
             'producto' => $producto,
             'logo' => $logo
         ]);
@@ -31,8 +31,10 @@ class ProductoImgController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'producto_id' => 'required|exists:productos,id',
-            'path' => 'required|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'path' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
             'orden' => 'required|string|max:255',
+            'titulo' => 'required|string|max:255',
+            'descripcion' => 'required|string',
         ]);
         if ($validator->fails()) {
             return back()->witherrors($validator->messages()->first());
@@ -44,28 +46,32 @@ class ProductoImgController extends Controller
             $imagePath=$file->store('images');
         } 
 
-        $imagen = ProductoImg::create([
+        $colocacion = Colocacion::create([
             'orden'              => $request->orden,
             'path'               => $imagePath,
             'producto_id'        => $request->producto_id,
+            'titulo'             => $request->titulo,
+            'descripcion'        => $request->descripcion,
         ]);
-        
+
         // Redireccionar al index con un mensaje de éxito
-        return redirect()->route('imagenes.dashboard', ['id' => $request->producto_id])->with('message', 'Imagen agregada exitosamente');
+        return redirect()->route('colocacion.dashboard', ['id' => $request->producto_id])->with('message', 'Colocación agregada exitosamente');
     }
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'path' => 'nullable|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'path' => 'nullable|mimes:jpeg,png,jpg,gif|max:2048',
             'orden' => 'nullable|string|max:255',
+            'titulo' => 'nullable|string|max:255',
+            'descripcion' => 'nullable|string',
         ]);
         if ($validator->fails()) {
             return back()->witherrors($validator->messages()->first());
         }
-        $productoImg = ProductoImg::findOrFail($id);
+        $colocacion = Colocacion::findOrFail($id);
 
         if ($request->hasFile('path')) {
-            $ruta= $productoImg->path;
+            $ruta= $colocacion->path;
             $file = $request->file('path');
             if (Storage::exists($ruta)) {
                 Storage::delete($ruta);
@@ -75,27 +81,29 @@ class ProductoImgController extends Controller
             
         }
         // Solo se actualizan los campos si el request contiene un valor
-        $productoImg->update(array_filter([
+        $colocacion->update(array_filter([
             'orden' => $request->orden,
-            'path' => $imagePath ?? $productoImg->path,
+            'path' => $imagePath ?? $colocacion->path,
+            'titulo' => $request->titulo,
+            'descripcion' => $request->descripcion,
         ]));
         
         // Redireccionar al index con un mensaje de éxito
-        return redirect()->route('imagenes.dashboard', ['id' => $productoImg->producto_id])->with('message', 'Imagen actualizada exitosamente');
+        return redirect()->route('colocacion.dashboard', ['id' => $colocacion->producto_id])->with('message', 'Colocación actualizada exitosamente');
     }
     public function destroy($id)
     {
-        $imagen = ProductoImg::findOrFail($id);
+        $colocacion = Colocacion::findOrFail($id);
 
         // Eliminar la imagen del almacenamiento si es necesario
-        if ($imagen->path) {
-            if (Storage::exists($imagen->path)) {
-                Storage::delete($imagen->path);
+        if ($colocacion->path) {
+            if (Storage::exists($colocacion->path)) {
+                Storage::delete($colocacion->path);
             }
         }
-        $imagen->delete();
+        $colocacion->delete();
 
         // Redireccionar al index con un mensaje de éxito
-        return redirect()->route('imagenes.dashboard', ['id' => $imagen->producto_id])->with('message', 'Imagen eliminada exitosamente');
+        return redirect()->route('colocacion.dashboard', ['id' => $colocacion->producto_id])->with('message', 'Colocación eliminada exitosamente');
     }
 }

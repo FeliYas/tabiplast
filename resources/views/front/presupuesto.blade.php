@@ -1,9 +1,6 @@
 @extends('layouts.guest')
-@section('meta')
-    <meta name="{{ $metadatos->seccion }}" content="{{ $metadatos->keyword }}">
-@endsection
 
-@section('title', __('Contacto'))
+@section('title', __('Presupuesto'))
 
 @section('content')
     <div>
@@ -13,14 +10,14 @@
                     <div class="flex gap-1 text-xs">
                         <a href="{{ route('home') }}" class="font-bold hover:underline">{{ __('Inicio') }}</a>
                         <span>></span>
-                        <a href="{{ route('contacto') }}" class="hover:underline">{{ __('Contacto') }}</a>
+                        <a href="{{ route('presupuesto') }}" class="hover:underline">{{ __('Presupuesto') }}</a>
                     </div>
                 </div>
                 <div class="absolute top-40">
-                    <h2 class=" font-bold text-[40px]">{{ __('Contacto') }}</h2>
+                    <h2 class="font-bold text-[40px]">{{ __('Presupuesto') }}</h2>
                 </div>
             </div>
-            <img src="{{ $contacto->banner }}" alt="{{ __('Banner de Contacto') }}" class="w-full h-[310px] object-cover">
+            <img src="{{ $banner->path }}" alt="{{ __('Banner de Contacto') }}" class="w-full h-[310px] object-cover">
         </div>
 
         <div class="max-w-[90%] lg:max-w-[1224px] mx-auto py-16 flex flex-col gap-10 lg:gap-12">
@@ -114,115 +111,94 @@
                     }, 7000);
                 </script>
             @endif
-            <!-- Fin mensajes de feedback -->
-            <div>
-                <h2 class="font-bold text-[32px] text-black">{{ __('Contactate con nosotros') }}</h2>
-            </div>
-            <div class="flex flex-col lg:flex-row gap-8">
-                <div class="lg:w-1/3 text-black flex flex-col gap-5">
-                    @foreach ($contactos as $contacto)
-                        @if ($contacto->direccion)
-                            <a href="https://maps.google.com/?q={{ urlencode($contacto->direccion) }}" target="_blank"
-                                class="no-underline text-inherit hover:text-main-color flex gap-3 items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 20 20"
-                                    fill="none">
-                                    <path
-                                        d="M16.6666 8.33333C16.6666 13.3333 9.99992 18.3333 9.99992 18.3333C9.99992 18.3333 3.33325 13.3333 3.33325 8.33333C3.33325 6.56522 4.03563 4.86953 5.28587 3.61929C6.53612 2.36905 8.23181 1.66667 9.99992 1.66667C11.768 1.66667 13.4637 2.36905 14.714 3.61929C15.9642 4.86953 16.6666 6.56522 16.6666 8.33333Z"
-                                        stroke="#F79E10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path
-                                        d="M10 10.8333C11.3807 10.8333 12.5 9.71405 12.5 8.33333C12.5 6.95262 11.3807 5.83333 10 5.83333C8.61929 5.83333 7.5 6.95262 7.5 8.33333C7.5 9.71405 8.61929 10.8333 10 10.8333Z"
-                                        stroke="#F79E10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <p>
-                                    {{ $contacto->direccion }}
-                                </p>
-                            </a>
-                        @endif
-                        @if ($contacto->telefono)
-                            <a href="tel:{{ preg_replace('/\s+/', '', $contacto->telefono) }}"
-                                class="no-underline text-inherit hover:text-main-color flex gap-3 items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"
-                                    fill="none">
-                                    <g clip-path="url(#clip0_9603_1371)">
-                                        <path
-                                            d="M18.3334 14.1V16.6C18.3344 16.8321 18.2868 17.0618 18.1939 17.2745C18.1009 17.4871 17.9645 17.678 17.7935 17.8349C17.6225 17.9918 17.4206 18.1112 17.2007 18.1856C16.9809 18.2599 16.7479 18.2876 16.5168 18.2667C13.9525 17.988 11.4893 17.1118 9.32511 15.7083C7.31163 14.4289 5.60455 12.7218 4.32511 10.7083C2.91676 8.53434 2.04031 6.05916 1.76677 3.48334C1.74595 3.25289 1.77334 3.02064 1.84719 2.80136C1.92105 2.58208 2.03975 2.38058 2.19575 2.20969C2.35174 2.0388 2.54161 1.90226 2.75327 1.80877C2.96492 1.71528 3.19372 1.66689 3.42511 1.66667H5.92511C6.32953 1.66269 6.7216 1.8059 7.02824 2.06961C7.33488 2.33332 7.53517 2.69954 7.59177 3.1C7.69729 3.90006 7.89298 4.68561 8.17511 5.44167C8.28723 5.73994 8.31149 6.0641 8.24503 6.37574C8.17857 6.68737 8.02416 6.97343 7.80011 7.2L6.74177 8.25833C7.92807 10.3446 9.65549 12.072 11.7418 13.2583L12.8001 12.2C13.0267 11.9759 13.3127 11.8215 13.6244 11.7551C13.936 11.6886 14.2602 11.7129 14.5584 11.825C15.3145 12.1071 16.1001 12.3028 16.9001 12.4083C17.3049 12.4654 17.6746 12.6693 17.9389 12.9812C18.2032 13.2932 18.3436 13.6913 18.3334 14.1Z"
-                                            stroke="#F79E10" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round" />
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_9603_1371">
-                                            <rect width="20" height="20" fill="white" />
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-                                <p>
-                                    {{ $contacto->telefono }}
-                                </p>
-                            </a>
-                        @endif
-                        @if ($contacto->email)
-                            <a href="mailto:{{ $contacto->email }}"
-                                class="no-underline text-inherit hover:text-main-color flex gap-2 items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                    viewBox="0 0 20 20" fill="none">
-                                    <path
-                                        d="M16.6667 3.33334H3.33341C2.41294 3.33334 1.66675 4.07953 1.66675 5V15C1.66675 15.9205 2.41294 16.6667 3.33341 16.6667H16.6667C17.5872 16.6667 18.3334 15.9205 18.3334 15V5C18.3334 4.07953 17.5872 3.33334 16.6667 3.33334Z"
-                                        stroke="#F79E10" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path
-                                        d="M18.3334 5.83334L10.8584 10.5833C10.6011 10.7445 10.3037 10.83 10.0001 10.83C9.69648 10.83 9.39902 10.7445 9.14175 10.5833L1.66675 5.83334"
-                                        stroke="#F79E10" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </svg>
-                                <p>
-                                    {{ $contacto->email }}
-                                </p>
-                            </a>
-                        @endif
-                    @endforeach
-                </div>
-                <div class="lg:w-2/3">
-                    <form action="{{ route('contacto.enviar') }}" method="POST" class="w-full space-y-6 text-black"
-                        id="contactForm">
-                        @csrf
-                        <div class="grid lg:grid-cols-2 gap-6">
-                            <div class="w-full relative">
-                                <label for="nombre" class="block mb-1">{{ __('Nombre') }} *</label>
-                                <input type="text" name="nombre" id="nombre" required
-                                    class="border border-[#B7B7B7] rounded-[10px] w-full h-12 px-4 focus:border-main-color focus:outline-none transition-colors">
-                            </div>
-                            <div class="w-full relative">
-                                <label for="apellido" class="block mb-1">{{ __('Apellido') }} *</label>
-                                <input type="text" name="apellido" id="apellido" required
-                                    class="border border-[#B7B7B7] rounded-[10px] w-full h-12 px-4 focus:border-main-color focus:outline-none transition-colors">
-                            </div>
+            <div class="lg:px-26"> 
+                <form action="{{ route('presupuesto.enviar') }}" method="POST" class="w-full text-black" id="contactForm"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <h2 class="font-bold text-2xl text-black mb-5">{{ __('Datos personales') }}</h2>
+                    <hr class="border-gray-200 pb-7">
+                    <div class="grid lg:grid-cols-2 gap-6 mb-6">
+                        <div class="w-full relative">
+                            <label for="nombre" class="block mb-2">{{ __('Nombre y Apellido') }} *</label>
+                            <input type="text" name="nombre" id="nombre" required
+                                class="border border-[#B7B7B7] rounded-[10px] w-full h-12 px-4 focus:border-main-color focus:outline-none transition-colors">
                         </div>
-                        <div class="grid lg:grid-cols-2 gap-6">
-                            <div class="w-full relative">
-                                <label for="email" class="block mb-1">{{ __('Email') }} *</label>
-                                <input type="email" name="email" id="email" required
-                                    class="border border-[#B7B7B7] rounded-[10px] w-full h-12 px-4 focus:border-main-color focus:outline-none transition-colors">
-                            </div>
-                            <div class="w-full relative">
-                                <label for="celular" class="block mb-1">{{ __('Celular') }}</label>
-                                <input type="text" name="celular" id="celular"
-                                    class="border border-[#B7B7B7] rounded-[10px] w-full h-12 px-4 focus:border-main-color focus:outline-none transition-colors">
-                            </div>
+                        <div class="w-full relative">
+                            <label for="email" class="block mb-2">{{ __('Email') }} *</label>
+                            <input type="email" name="email" id="email" required
+                                class="border border-[#B7B7B7] rounded-[10px] w-full h-12 px-4 focus:border-main-color focus:outline-none transition-colors">
                         </div>
-                        <div class="flex flex-col lg:flex-row gap-6">
-                            <div class="w-full py-2 relative">
-                                <label for="mensaje" class="block mb-1">{{ __('Mensaje') }} *</label>
-                                <textarea name="mensaje" id="mensaje" cols="30" rows="10" required
-                                    class="border border-[#B7B7B7] rounded-[10px] w-full px-4 py-2 h-[158px] focus:border-main-color focus:outline-none transition-colors"></textarea>
+                    </div>
+                    <div class="grid lg:grid-cols-2 gap-6">
+                        <div class="w-full relative">
+                            <label for="telefono" class="block mb-2">{{ __('Telefono') }} *</label>
+                            <input type="text" name="telefono" id="telefono" required
+                                class="border border-[#B7B7B7] rounded-[10px] w-full h-12 px-4 focus:border-main-color focus:outline-none transition-colors">
+                        </div>
+                        <div class="w-full relative">
+                            <label for="empresa" class="block mb-2">{{ __('Empresa') }}</label>
+                            <input type="text" name="empresa" id="empresa"
+                                class="border border-[#B7B7B7] rounded-[10px] w-full h-12 px-4 focus:border-main-color focus:outline-none transition-colors">
+                        </div>
+                    </div>
+                    <h2 class="font-bold text-2xl text-black mb-5 mt-15">{{ __('Consulta') }}</h2>
+                    <hr class="border-gray-200 pb-7">
+                    <div class="grid lg:grid-cols-2 gap-6 mb-6">
+                        <div class="w-full relative">
+                            <label for="producto" class="block mb-2">{{ __('Producto') }} *</label>
+                            <select name="producto" id="producto" required
+                                class="border border-[#B7B7B7] rounded-[10px] w-full h-12 px-4 bg-white focus:border-main-color focus:outline-none transition-colors">
+                                <option value="" disabled selected>Seleccionar producto</option>
+                                @foreach ($productos as $producto)
+                                    <option value="{{ $producto->id }}">{{ $producto->titulo }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="w-full relative">
+                            <label for="cantidad" class="block mb-2">{{ __('Cantidad') }}</label>
+                            <input type="number" name="cantidad" id="cantidad"
+                                class="border border-[#B7B7B7] rounded-[10px] w-full h-12 px-4 focus:border-main-color focus:outline-none transition-colors">
+                        </div>
+                    </div>
+                    <div class="flex flex-col lg:flex-row gap-6">
+                        <div class="w-full py-2 relative">
+                            <label for="mensaje" class="block mb-2">{{ __('Aclaraciones / Observaciones') }}</label>
+                            <textarea name="mensaje" id="mensaje" cols="30" rows="10" required
+                                class="border border-[#B7B7B7] rounded-[10px] w-full px-4 py-2 h-[157px] focus:border-main-color focus:outline-none transition-colors"></textarea>
+                        </div>
+                        <div class="w-full flex flex-col items-start justify-between gap-10 lg:mb-3">
+                            <div class="w-full relative">
+                                <label for="archivo" class="block mb-2">{{ __('Adjuntar archivo') }}</label>
+                                <div class="relative">
+                                    <input type="file" name="archivo" id="archivo" class="hidden"
+                                        onchange="updateFileName()">
+                                    <label for="archivo"
+                                        class="flex items-center border border-[#B7B7B7] rounded-[10px] w-full h-12 px-4 cursor-pointer">
+                                        <span id="archivo-label" class="text-gray-400 flex-1 text-sm">Seleccionar
+                                            archivo</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none">
+                                            <g opacity="0.4">
+                                                <path
+                                                    d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15M17 8L12 3M12 3L7 8M12 3V15"
+                                                    stroke="#231F20" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </g>
+                                        </svg>
+                                    </label>
+                                </div>
                             </div>
-                            <div class="w-full flex flex-col items-start justify-between gap-10 lg:mb-3">
-                                <span class="mt-8">* Datos obligatorios</span>
+                            <div class="flex flex-col lg:flex-row items-center justify-between w-full">
+                                <div>
+                                    <span class="mt-8">* Datos obligatorios</span>
+                                </div>
                                 <div class="mt-auto py-1 flex flex-col items-center justify-center ">
                                     <!-- Agregamos campo oculto para almacenar el token de reCAPTCHA -->
                                     <input type="hidden" name="g-recaptcha-response" id="recaptchaResponse">
                                     <button type="button" id="submitBtn"
-                                        class="btn-primary w-full lg:w-[392px] relative">
-                                        <span id="submitText" class="inline-block">{{ __('Enviar consulta') }}</span>
+                                        class="btn-primary w-full lg:w-[287px] relative">
+                                        <span id="submitText"
+                                            class="inline-block">{{ __('Enviar solicitud de presupuesto') }}</span>
                                         <span id="loadingIndicator"
                                             class="hidden absolute inset-0 items-center justify-center">
                                             <svg class="animate-spin h-5 w-5 text-white"
@@ -239,13 +215,8 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="max-w-[90%] lg:max-w-[1224px] mx-auto mb-33">
-            <div class="w-full h-[570px] rounded-[10px] overflow-hidden">
-                {!! preg_replace(['/width="[^"]*"/', '/height="[^"]*"/'], ['width="100%"', 'height="100%"'], $mapa) !!}
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -293,7 +264,22 @@
             }
         });
     </script>
-
+    <script>
+        // Archivo personalizado
+        function updateFileName() {
+            const input = document.getElementById('archivo');
+            const label = document.getElementById('archivo-label');
+            if (input.files && input.files.length > 0) {
+                label.textContent = input.files[0].name;
+                label.classList.remove('text-gray-400');
+                label.classList.add('text-black');
+            } else {
+                label.textContent = 'Seleccionar archivo';
+                label.classList.remove('text-black');
+                label.classList.add('text-gray-400');
+            }
+        }
+    </script>
     <style>
         /* Estilo para el placeholder */
         ::placeholder {
@@ -313,6 +299,13 @@
         textarea:focus {
             border-color: #c87800 !important;
             box-shadow: 0 0 0 1px rgba(225, 35, 40, 0.2);
+        }
+
+        /* Estilo para el input de archivo custom */
+        #archivo-label {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     </style>
 @endsection

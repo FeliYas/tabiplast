@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 @import 'tailwindcss';
 
 @import "tw-animate-css";
 
-/* Regla global para aplicar las fuentes Montserrat y Roboto a toda la web */
+/* Regla global para aplicar las fuentes Barlow  a toda la web */
 html, body {
-  font-family: 'Montserrat', 'Roboto', ui-sans-serif, system-ui, sans-serif !important;
+  font-family: 'Barlow', ui-sans-serif, system-ui, sans-serif !important;
 }
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -16,7 +16,7 @@ html, body {
 
 @theme inline {
   --font-sans:
-    Montserrat, Roboto, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    Barlow, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
     'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
   --radius-lg: var(--radius);
@@ -77,7 +77,7 @@ html, body {
 */
 @layer base {
   html, body {
-    font-family: 'Montserrat', 'Roboto', ui-sans-serif, system-ui, sans-serif;
+    font-family: 'Barlow', ui-sans-serif, system-ui, sans-serif;
   }
   *,
   ::after,
@@ -92,10 +92,10 @@ html, body {
   body,
   html {
     --font-sans:
-      'Montserrat', 'Roboto', ui-sans-serif, system-ui, sans-serif,
+      'Barlow', ui-sans-serif, system-ui, sans-serif,
       'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
       'Noto Color Emoji';
-    font-family: 'Montserrat', 'Roboto', ui-sans-serif, system-ui, sans-serif;
+    font-family: 'Barlow', ui-sans-serif, system-ui, sans-serif;
   }
 }
 
@@ -258,7 +258,6 @@ html, body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: 500;
   transition: all 0.3s ease-in-out;
 }
 
@@ -269,8 +268,8 @@ html, body {
   transform: scale(1.03);
 }
 
-/* Aplicar fuentes Montserrat y Roboto a toda la web (excepto iconos) */
+/* Aplicar fuentes Barlow  a toda la web (excepto iconos) */
 :not(.fa):not(.fas):not(.far):not(.fab):not(.fal):not(.fad):not([class*="fa-"]) {
-  font-family: 'Montserrat', 'Roboto', ui-sans-serif, system-ui, sans-serif !important;
+  font-family: 'Barlow', ui-sans-serif, system-ui, sans-serif !important;
 }
 

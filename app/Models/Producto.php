@@ -13,6 +13,8 @@ class Producto extends Model
         'categoria_id',
         'ficha',
         'video',
+        'adword',
+        'destacado',
     ];
 
     public function categoria()

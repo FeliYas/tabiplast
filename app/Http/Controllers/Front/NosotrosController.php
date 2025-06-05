@@ -8,6 +8,7 @@ use App\Models\Contacto;
 use App\Models\Logo;
 use App\Models\Metadato;
 use App\Models\Nosotros;
+use App\Models\Tarjeta;
 use Illuminate\Http\Request;
 
 class NosotrosController extends Controller
@@ -16,17 +17,19 @@ class NosotrosController extends Controller
     {
         $nosotros = Nosotros::first();
         $nosotros->path = asset('storage/' . $nosotros->path);
-        $banners = Banner::orderby('orden', 'asc')->get();
-        foreach ($banners as $banner) {
-            $banner->path = asset('storage/' . $banner->path);
+        $nosotros->video = asset('storage/' . $nosotros->video);
+        $nosotros->banner = asset('storage/' . $nosotros->banner);
+        $tarjetas = Tarjeta::all();
+        foreach ($tarjetas as $tarjeta) {
+            $tarjeta->path = asset('storage/' . $tarjeta->path);
         }
         $metadatos = Metadato::where('seccion', 'nosotros')->first();
         $logos = Logo::whereIn('seccion', ['navbar', 'footer'])->get();
         foreach ($logos as $logo) {
             $logo->path = asset('storage/' . $logo->path);
         }
-        $contactos = Contacto::select('direccion', 'email', 'telefono', 'telefono2')->get();
+        $contactos = Contacto::select('direccion', 'email', 'telefono', 'facebook', 'instagram', 'linkedin')->get();
         $whatsapp = Contacto::select('whatsapp')->first()->whatsapp;
-        return view('front.nosotros', compact('nosotros', 'banners', 'metadatos', 'logos', 'contactos', 'whatsapp'));
+        return view('front.nosotros', compact('nosotros', 'tarjetas', 'metadatos', 'logos', 'contactos', 'whatsapp'));
     }
 }

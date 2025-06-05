@@ -168,17 +168,12 @@
                     <div class="data-value">{{ $datos['email'] }}</div>
                 </div>
 
-                @if (!empty($datos['empresa']))
+                @if (!empty($datos['celular']))
                     <div class="data-row">
-                        <div class="data-label">Empresa:</div>
-                        <div class="data-value">{{ $datos['empresa'] }}</div>
+                        <div class="data-label">Celular:</div>
+                        <div class="data-value">{{ $datos['celular'] }}</div>
                     </div>
                 @endif
-
-                <div class="data-row">
-                    <div class="data-label">Ubicación:</div>
-                    <div class="data-value">{{ $datos['localidad'] }}, {{ $datos['pais'] }}</div>
-                </div>
             </div>
 
             <div class="message-container">

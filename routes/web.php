@@ -1,13 +1,9 @@
 <?php
-
-use App\Http\Controllers\Admin\AplicacionesController;
-use App\Http\Controllers\Admin\AplicacionProductoController;
-use App\Http\Controllers\Admin\BannerController;
-use App\Http\Controllers\Admin\CalidadController;
 use App\Http\Controllers\Admin\CategoriaController;
-use App\Http\Controllers\Admin\ColorController;
+use App\Http\Controllers\Admin\ColocacionController;
 use App\Http\Controllers\Admin\ContactoController;
 use App\Http\Controllers\Admin\ContenidoController;
+use App\Http\Controllers\Admin\InternacionalController;
 use App\Http\Controllers\Admin\LogoController;
 use App\Http\Controllers\Admin\MetadatoController;
 use App\Http\Controllers\Admin\NewsletterController;
@@ -17,13 +13,12 @@ use App\Http\Controllers\Admin\ProductoController;
 use App\Http\Controllers\Admin\ProductoImgController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\UsuarioController;
-use App\Http\Controllers\Front\AplicacionesController as FrontAplicacionesController;
-use App\Http\Controllers\Front\CalidadController as FrontCalidadController;
-use App\Http\Controllers\Front\ColorController as FrontColorController;
 use App\Http\Controllers\Front\ContactoController as FrontContactoController;
 use App\Http\Controllers\Front\HomeController;
+use App\Http\Controllers\Front\InternacionalController as FrontInternacionalController;
 use App\Http\Controllers\Front\NosotrosController as FrontNosotrosController;
 use App\Http\Controllers\Front\NovedadesController as FrontNovedadesController;
+use App\Http\Controllers\Front\PresupuestoController;
 use App\Http\Controllers\Front\ProductosController;
 use App\Models\Logo;
 use Illuminate\Support\Facades\Route;
@@ -32,12 +27,16 @@ use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/nosotros', [FrontNosotrosController::class, 'index'])->name('nosotros');
-Route::get('/productos/{id?}', [ProductosController::class, 'index'])->name('productos');
-Route::get('/producto/{id}', [ProductosController::class, 'show'])->name('producto');
+Route::get('/productos', [ProductosController::class, 'index'])->name('categorias');
+Route::get('/productos/{id}', [ProductosController::class, 'show'])->name('productos');
+Route::get('/producto/{id}', [ProductosController::class, 'showProducto'])->name('producto');
+Route::get('/internacional', [FrontInternacionalController::class, 'index'])->name('internacional');
 Route::get('/novedades', [FrontNovedadesController::class, 'index'])->name('novedades');
 Route::get('/novedades/{id}', [FrontNovedadesController::class, 'show'])->name('novedad');
 Route::get('/contacto', [FrontContactoController::class, 'index'])->name('contacto');
 Route::post('/contacto/enviar', [FrontContactoController::class, 'enviar'])->name('contacto.enviar');
+Route::get('/presupuesto', [PresupuestoController::class, 'index'])->name('presupuesto');
+Route::post('/presupuesto/enviar', [PresupuestoController::class, 'enviar'])->name('presupuesto.enviar');
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'store'])->name('newsletter.store');
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -61,16 +60,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/home/contenido', [ContenidoController::class, 'index'])->name('contenido.dashboard');
     Route::post('/admin/home/contenido/update/{id}', [ContenidoController::class, 'update'])->name('contenido.update');
 
-    //rutas de las nosotros del dashboard
-    Route::get('/admin/nosotros', [NosotrosController::class, 'index'])->name('nosotros.dashboard');
-    Route::post('/admin/nosotros/update/{id}', [NosotrosController::class, 'update'])->name('nosotros.update');
+    //rutas de las nosotros del dashboard// Rutas para el controlador de Nosotros
+Route::get('/admin/nosotros', [NosotrosController::class, 'index'])->name('nosotros.dashboard');
+Route::post('/admin/nosotros/update/{id}', [NosotrosController::class, 'update'])->name('nosotros.update');
+Route::put('/admin/nosotros/tarjeta/update/{id}', [NosotrosController::class, 'updateTarjeta'])->name('tarjeta.update');
 
     //rutas de los categorias del dashboard
     Route::get('/admin/productos/categorias', [CategoriaController::class, 'index'])->name('categorias.dashboard');
+    Route::post('/admin/productos/categorias/banner/{id}', [CategoriaController::class, 'banner'])->name('categorias.banner');
     Route::post('/admin/productos/categorias/store', [CategoriaController::class, 'store'])->name('categorias.store');
     Route::put('/admin/productos/categorias/update/{id}', [CategoriaController::class, 'update'])->name('categorias.update');
     Route::delete('/admin/productos/categorias/destroy/{id}', [CategoriaController::class, 'destroy'])->name('categorias.destroy');
-    
+    Route::post('/admin/productos/categorias/destacado', [CategoriaController::class, 'toggleDestacado'])->name('categorias.toggleDestacado');
 
     //rutas de los productos del dashboard
     Route::get('/admin/productos/productos', [ProductoController::class, 'index'])->name('productos.dashboard');
@@ -82,9 +83,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/admin/productos/productos/imagenes/store', [ProductoImgController::class, 'store'])->name('imagenes.store');
     Route::put('/admin/productos/productos/imagenes/update/{id}', [ProductoImgController::class, 'update'])->name('imagenes.update');
     Route::delete('/admin/productos/productos/imagenes/delete/{id}', [ProductoImgController::class, 'destroy'])->name('imagenes.destroy');
+    Route::get('/admin/productos/productos/colocacion/{id}', [ColocacionController::class, 'index'])->name('colocacion.dashboard');
+    Route::post('/admin/productos/productos/colocacion/store', [ColocacionController::class, 'store'])->name('colocacion.store');
+    Route::put('/admin/productos/productos/colocacion/update/{id}', [ColocacionController::class, 'update'])->name('colocacion.update');
+    Route::delete('/admin/productos/productos/colocacion/delete/{id}', [ColocacionController::class, 'destroy'])->name('colocacion.destroy');
+
+Route::get('/admin/internacional', [InternacionalController::class, 'index'])->name('internacional.dashboard');
+Route::post('/admin/internacional/update/{id}', [InternacionalController::class, 'update'])->name('internacional.update');
 
     //rutas de las novedades del dashboard
     Route::get('/admin/novedades', [NovedadesController::class, 'index'])->name('novedades.dashboard');
+    Route::post('/admin/novedades/banner/{id}', [NovedadesController::class, 'banner'])->name('novedades.banner');
     Route::post('/admin/novedades/store', [NovedadesController::class, 'store'])->name('novedades.store');
     Route::put('/admin/novedades/update/{id}', [NovedadesController::class, 'update'])->name('novedades.update');
     Route::delete('/admin/novedades/destroy/{id}', [NovedadesController::class, 'destroy'])->name('novedades.destroy');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Banner;
 use App\Models\Categoria;
 use App\Models\Contacto;
 use App\Models\Logo;
@@ -12,38 +13,57 @@ use Illuminate\Http\Request;
 
 class ProductosController extends Controller
 {
-    public function index(Request $request, $id = null)
+    public function index()
     {
-        // Si se especifica una categoría, filtramos los productos por esa categoría
-        if ($id) {
-            $productos = Producto::where('categoria_id', $id)->orderBy('orden', 'asc')->get();
-        } else {
-            $productos = Producto::orderBy('orden', 'asc')->get();
+        $categorias = Categoria::orderBy('orden', 'asc')->get();
+        foreach ($categorias as $categoria) {
+            $categoria->path = asset('storage/' . $categoria->path);
         }
+        $banner = Banner::where('seccion', 'categorias')->first();
+        $banner->path = asset('storage/' . $banner->path);
+        $metadatos = Metadato::where('seccion', 'productos')->first();
+        $logos = Logo::whereIn('seccion', ['navbar', 'footer'])->get();
+        foreach ($logos as $logo) {
+            $logo->path = asset('storage/' . $logo->path);
+        }
+        $contactos = Contacto::select('direccion', 'email', 'telefono', 'facebook', 'instagram', 'linkedin')->get();
+        $whatsapp = Contacto::select('whatsapp')->first()->whatsapp;
+        return view('front.categorias', compact('categorias', 'banner', 'metadatos', 'logos', 'contactos', 'whatsapp'));
+    }
+    public function show(Request $request, $id)
+    {
+
+        $productos = Producto::where('categoria_id', $id)->orderBy('orden', 'asc')->get();
         
         // Procesamos las imágenes de los productos
         foreach ($productos as $producto) {
-            if ($producto->imagenes->count() > 0) {
-                $producto->imagenes->first()->path = asset('storage/' . $producto->imagenes->first()->path);
+            $imagenPrincipal = $producto->imagenPrincipal()->first();
+            if ($imagenPrincipal && $imagenPrincipal->path) {
+                $producto->imagen = asset('storage/' . $imagenPrincipal->path);
+            } else {
+                $producto->imagen = null;
             }
         }
+        $categoria = Categoria::findOrFail($id);
         $categorias = Categoria::orderBy('orden', 'asc')->get();
         $logos = Logo::whereIn('seccion', ['navbar', 'footer'])->get();
         foreach ($logos as $logo) {
             $logo->path = asset('storage/' . $logo->path);
         }
-        $metadatos = Metadato::where('seccion', 'productos')->first();
-        $contactos = Contacto::select('direccion', 'email', 'telefono', 'telefono2')->get();
+        $contactos = Contacto::select('direccion', 'email', 'telefono', 'facebook', 'instagram', 'linkedin')->get();
         $whatsapp = Contacto::select('whatsapp')->first()->whatsapp;
-        return view('front.productos', compact('productos', 'categorias', 'logos', 'metadatos', 'contactos', 'whatsapp'));
+        return view('front.productos', compact('productos', 'categorias', 'logos', 'contactos', 'whatsapp', 'categoria'));
     }
-    public function show($id)
+    public function showProducto($id)
     {
         $producto = Producto::findOrFail($id);
         $producto->imagenes->each(function ($imagen) {
             $imagen->path = asset('storage/' . $imagen->path);
         });
-
+        $producto->colocaciones->each(function ($colocacion) {
+            $colocacion->path = asset('storage/' . $colocacion->path);
+        });
+        $producto->video = $producto->video ? asset('storage/' . $producto->video) : null;
         // Obtener productos relacionados (misma categoría, excluyendo el producto actual)
         $productosRelacionados = Producto::where('categoria_id', $producto->categoria_id)
             ->where('id', '!=', $producto->id)

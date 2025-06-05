@@ -97,6 +97,15 @@
             </ul>
           </li>
           <li>
+            <Link :href="route('internacional.dashboard')"
+              class="grid grid-cols-[24px_1fr_24px] items-center gap-3 px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-all duration-200 group cursor-pointer">
+            <i class="fa-solid fa-earth-americas text-center w-5 text-white"></i>
+            <span
+              class="whitespace-nowrap group-hover:translate-x-1 transition-transform duration-200">Internacional</span>
+            <span></span>
+            </Link>
+          </li>
+          <li>
             <Link :href="route('novedades.dashboard')"
               class="grid grid-cols-[24px_1fr_24px] items-center gap-3 px-4 py-3 text-white hover:bg-white/10 rounded-lg transition-all duration-200 group cursor-pointer">
             <i class="fa-solid fa-newspaper text-center w-5 text-white"></i>
